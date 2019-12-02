@@ -2,100 +2,48 @@ import React from "react";
 import { Redirect } from "react-router-dom";
 import { Button } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
-import { storage } from "../../firebase";
 
-class SubmitProduct extends React.Component {
+class Login extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      error: false,
-      success: false,
-      productName: "",
-      description: "",
-      price: "",
-      amount: "",
-      sellerID: "",
-      category: "Textbook",
-      image: null,
-      imageURL: "",
+
     };
 
     this.handleChange = this.handleChange.bind(this);
-    this.handleImgChange = this.handleImgChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleChange = (event) => {
     this.setState({ [event.target.name]: event.target.value });
   }
-  handleImgChange = (event) => {
-    // this.setState({
-    //   img: URL.createObjectURL(event.target.files[0])
-    // })
-    if (event.target.files[0]) {
-      const image = event.target.files[0];
-      console.log(image);
-      this.setState({
-        image: image
-      });
-      const uploadTask = storage.ref(`listingImages/${image.name}`).put(image);
-      uploadTask.on('state_changed',
-      (snapshot) => {
-        // progress function
-        const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
-        this.setState({progress});
-      },
-      (error) => {
-        // error function
-        console.log(error);
-      },
-      () => {
-        // complete function
-        storage.ref('listingImages').child(`${image.name}`).getDownloadURL().then(url => {
-          console.log(url);
-          this.setState({
-            imageURL: url
-          });
-          console.log(this.state.imageURL);
-          console.log('url is saved');
-        })
-      });
-    }
-  }
 
   handleSubmit(event) {
     event.preventDefault();
     
-    const productData = {
-      productName: this.state.productName,
-      description: this.state.description,
-      price: this.state.price,
-      amount: this.state.amount,
-      sellerID: this.state.sellerID,
-      category: this.state.category,
-      imageURL: this.state.imageURL,
+    const userData = {
+      
     };
 
-    console.log(productData)
+    console.log(userData)
 
     fetch("/api/products", {
-      method: "POST",
+      method: "GET",
       credentials: "include",
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify(productData)
+      body: JSON.stringify(userData)
     })
       .then(res => {
         console.log(res);
         if (res.ok) {
-        
           return res.json();
         }
-        throw new Error("Product Validation");
+        throw new Error("Login Validation");
       })
-      .then(product => {
+      .then(user => {
         this.setState({
           success: true
         });
@@ -105,7 +53,6 @@ class SubmitProduct extends React.Component {
           error: true
         });
         console.log(err);
-        // console.log(formData.get("productName"));
       });
   }
 
@@ -116,7 +63,7 @@ class SubmitProduct extends React.Component {
     if (this.state.error) {
       errorMessage = (
         <div className="alert alert-danger">
-          "There was an error submiting this product."
+          "Wrong Username or Password."
         </div>
       );
     }
@@ -221,4 +168,4 @@ class SubmitProduct extends React.Component {
   }
 }
 
-export default SubmitProduct;
+export default Login;
