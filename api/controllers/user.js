@@ -4,14 +4,13 @@ const { Op } = db.Sequelize;
 
 async function findAllUsers(userInfo) {
   try {
-    console.log("inside the findAllUsers function")
     const { email, username } = userInfo;
     const response = await User.findOne({
       where: {
         [Op.or]: [{ email }, { username }]
       }
     });
-    console.log(response)
+    // console.log(response)
     return response;
   } catch (err) {
     throw err;
@@ -20,10 +19,9 @@ async function findAllUsers(userInfo) {
 
 async function checkUserInfo(userInfo) {
   try {
-    console.log("inside the checkUserInfo function")
     const { email, username } = userInfo;
     const response = await findAllUsers({ email, username });
-    console.log(response)
+    // console.log(response)
     return !!response;
   } catch (err) {
     throw new Error("Username or email already Existed!");
@@ -32,25 +30,22 @@ async function checkUserInfo(userInfo) {
 
 async function createUser(userInfo) {
     try {
-      console.log("inside the createUser function")
       const { email, username, password, firstName, lastName, school } = userInfo;
       const response = await User.create({
         username,
         email,
         password: password
       });
-      console.log(response);
-      console.log(response.dataValues)
+      // console.log(response);
       const {userID} = response.dataValues;
-      console.log(userID);
+      // console.log(userID);
       const responses = await UserProfile.create({
         userID,
         firstName,
         lastName,
         school
       });
-      console.log("finish")
-      console.log("response:", responses)
+      // console.log("response:", responses)
       return {
         ...response.dataValues,
         ...responses.dataValues,
@@ -62,7 +57,6 @@ async function createUser(userInfo) {
 
 async function registerUserInfo(userInfo) {
   try {
-    console.log("IN register user")
     const { email, username, password, firstName, lastName, school } = userInfo;
     const userExist = await checkUserInfo(userInfo);
     if (userExist) {
@@ -76,7 +70,7 @@ async function registerUserInfo(userInfo) {
       lastName,
       school
     });
-    console.log("register info:",response)
+    // console.log("register info:",response)
     return response;
   } catch (err) {
     throw err;
@@ -85,12 +79,10 @@ async function registerUserInfo(userInfo) {
 
 async function findUser(username) {
   try {
-    console.log("inside the findUser function")
-    console.log(username)
     const response = await User.findOne({
       where: { username }
     });
-    console.log(response);
+    // console.log(response);
     return response;
   } catch (err) {
     throw err;
@@ -99,10 +91,8 @@ async function findUser(username) {
 
 async function getMatchingUser(username) {
   try {
-    console.log(username)
-    console.log("inside the getMatchingUser function")
     const userData = await findUser(username);
-    console.log(userData);
+    // console.log(userData);
     if (!userData) {
       throw new Error("Invaild username");
     }
@@ -114,19 +104,16 @@ async function getMatchingUser(username) {
 
 async function validateUserCredential(username, password) {
   try {
-    console.log("inside the validateUserCredential function")
     const userData = await getMatchingUser(username);
-    console.log(userData);
+    // console.log(userData);
     const { password: comparedPassword, userID} = userData;
     const isMatchPassword = await (password === comparedPassword)
-    console.log(isMatchPassword);
+    // console.log(isMatchPassword);
     if (!isMatchPassword) {
       throw new Error("Login unsuccessfully");
     }
     const token = Buffer.from(userID.toString(), 'binary').toString('base64');
-    return {userID, token};
-    console.log(userID);
-    return userID;
+    return token;
   } catch (err) {
     throw err;
   }
@@ -139,10 +126,10 @@ async function tokenAuthentiation(token) {
       throw new Error('must have a token');
     }
     const filteredToken = bearerToken.split(' ');
-    console.log("encoded: " + filteredToken[1])
+    // console.log("encoded: " + filteredToken[1])
     const userID = Buffer.from(filteredToken[1], 'base64').toString('binary')
     
-    console.log("decoded: " + userID);
+    // console.log("decoded: " + userID);
     return userID;
   } catch (err) {
     throw new Error('Invalid Token' );

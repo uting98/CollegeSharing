@@ -21,11 +21,11 @@ async function signUpAccount(userInfo) {
 async function loginAccount(username, password) {
   try {
     console.log("Login:", username)
-    const {userID, token}  = await validateUserCredential(username, password);
-    console.log(userID);
+    // const {userID, token}  = await validateUserCredential(username, password);
+    const token = await validateUserCredential(username, password);
+    // console.log(userID);
     const response = {
       username,
-      userID,
       token,
     };
     return response;

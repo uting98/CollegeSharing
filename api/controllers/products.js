@@ -22,7 +22,7 @@ const { tokenAuthentiation } = require('./user');
 console.log("INSIDE PRODUCTS");
 router.get('/', async (req,res) => {
   try{
-    req.userID = await tokenAuthentiation(req.headers.authorization);
+    // req.userID = await tokenAuthentiation(req.headers.authorization);
     Product.findAll({})
     .then(posts =>{ res.json(posts);
       
@@ -34,8 +34,9 @@ router.get('/', async (req,res) => {
 
 });
 
-router.post('/', (req,res) => {
+router.post('/', async (req,res) => {
   console.log("POST body: ", req.body);
+  req.body.sellerID = await tokenAuthentiation(req.headers.authorization);
   const {productName, price, amount, description, sellerID, category, imageURL} = req.body;
   Product.create({
     productName, 

@@ -2,6 +2,8 @@ import React from 'react';
 import Post from '../components/Post';
 import Loading from '../components/Loading';
 import Product from '../components/Product';
+import cookie from 'react-cookies';
+import Login from './Form/Login';
 
 
 
@@ -84,7 +86,10 @@ class PostsListPage extends React.Component {
     if(this.state.loading) {
       return <Loading />;
     }
+    const isAuthenticated = cookie.load("token");
+    // console.log("isAuth = " + isAuthenticated);
 
+    if(isAuthenticated) {
     return (
       <div style={{width:'100%'}}>  
       
@@ -142,6 +147,12 @@ class PostsListPage extends React.Component {
         </div>
       </div>
     );
+    }
+    else{
+      return(
+        <Login />
+      )
+    }
   }
 }
 
