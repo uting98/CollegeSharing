@@ -8,6 +8,7 @@ import {
 } from 'react-router-dom';
 import PostsListPage from './pages/PostsListPage';
 import SubmitProduct from './pages/Form/SubmitProduct';
+import IndividualProduct from "./pages/IndividualProduct";
 
 import './App.css';
 
@@ -20,6 +21,12 @@ function Navigation(props) {
         <li className="nav-item">
           <NavLink className="nav-link" exact to="/productSubmission">
             Add Product
+          </NavLink>
+        </li>
+
+        <li>
+            <NavLink className="nav-link" exact to="/IndividualProduct">
+            IndividualProduct
           </NavLink>
         </li>
       </ul>
@@ -37,6 +44,7 @@ class App extends React.Component {
             <div className="row justify-content-center">
               <Switch>
                 <Route path="/productSubmission" component={SubmitProduct} />
+                <Route path="/IndividualProduct" component={IndividualProduct} />
                 <Route path="/" component={PostsListPage} />
               </Switch>
             </div>
