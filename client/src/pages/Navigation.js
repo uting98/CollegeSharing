@@ -29,10 +29,11 @@ class Navigation extends React.Component {
     // console.log("isAuth = " + isAuthenticated);
     return (
       <nav className="navbar navbar-expand-sm navbar-dark shadow mb-3" style={{backgroundColor: '#800080'}}>
-        <LocalLibraryOutlinedIcon/>
-      <nav className="navbar navbar-expand-sm navbar-dark bg-dark shadow mb-3">
+        
         <Link className="navbar-brand" to="/">
+        <LocalLibraryOutlinedIcon/>
           College Sharing
+          <LocalLibraryOutlinedIcon/>
         </Link>
         <ul className="navbar-nav mr-auto">
           <li className="nav-item">

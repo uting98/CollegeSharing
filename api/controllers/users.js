@@ -2,9 +2,10 @@ const express = require('express');
 const router = express.Router();
 const db = require('../models');
 const { User } = require('../models');
+const { UserProfile } = require('../models');
 const Sequelize = require('sequelize');
 const op = Sequelize.Op;
-
+//import {cookie} from "react-cookies";
 
 // This is a simple example for providing basic CRUD routes for
 // a resource/model. It provides the following:
@@ -62,6 +63,23 @@ router.get('/username/:username', (req, res) => {
       
     })
   });
+
+router.get('/school/:username', (req, res) => {
+
+  console.log("\n school \n \n ");
+  UserProfile.findAll({
+    include:[{
+      model: User,
+      where:{username: req.params.username}
+    }]
+    
+    } )
+  .then(posts =>{ res.json(posts);
+    
+  })
+
+  
+});
 
 router.put('/:id', (req, res) => {
   const { id } = req.params;

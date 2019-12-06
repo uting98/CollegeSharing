@@ -3,9 +3,13 @@ const express = require('express');
 const router = express.Router();
 const db = require('../models');
 const { Product } = require('../models');
+
+const { UserProfile } = require('../models');
+const { User } = require('../models');
 const Sequelize = require('sequelize');
 const op = Sequelize.Op;
 const { tokenAuthentiation } = require('./user');
+//import cookie from "react-cookies";
 
 // This is a simple example for providing basic CRUD routes for
 // a resource/model. It provides the following:
@@ -71,21 +75,32 @@ router.post('/', async (req,res) => {
 // });
 
 
-router.get('/:productName',(req, res) => {
-  console.log(req.params.productName);
+router.get('/search/:school/:productName',(req, res) => {//where: { productName:{ [op.iLike] :'%'+req.params.productName+'%'}}
+  console.log(req.params.productName+" "+req.params.school);
 
-  Product.findAll({where: { productName:{ [op.iLike] :'%'+req.params.productName+'%'}} })
-    .then(post => {
-      
-      if(!post) {
-        return res.sendStatus(404);
-        
-      }
+  Product.findAll({
+    
+    where: { productName:{ [op.iLike] :'%'+req.params.productName+'%'}},
+    include: [{
+      model: User,
+      where:{userID: {[op.gt]:0}},
+      include:[{
+        model:UserProfile,
+        where:{[op.and]: [{school:req.params.school}]}
+      }]
+  }]
+     
+  })
 
-      res.json(post);
-    });
+  .then(post => {
+    if(!post) {
+      return res.sendStatus(404);
+    }
+
+    res.json(post);
+  });
+
 });
-
 
 
 router.get('/:id', (req, res) => {
@@ -137,91 +152,237 @@ router.delete('/:id', (req, res) => {
 });
 
 
+router.get('/school/:school', (req, res) => {
+ // let x = cookie.load('username');
+  let y ;
+  console.log("\n school \n \n ");// + req.params.username+ "   "+ req.params.userID);
+  // Find all projects with a least one task where task.state === project.state
+  Product.findAll({
+    include: [{
+      model: User,
+      where:{userID: {[op.gt]:0}},
+      include:[{
+        model:UserProfile,
+        where:{[op.and]: [{school:req.params.school}]}
+      }]
+  }]
+     
+  },
+  console.log("\n found"))   .then(post => {
+    if(!post ){
+
+      return res.sendStatus(404);
+    }
+
+    res.json(post);
+  });
+
+});
+
+
 
 //router.get for each categories
 //I couldnt get this working in a better way so I used this kind of brute force approach
 
+router.get('/category/arts-and-crafts/:school',(req, res) => {
+  Product.findAll({
+    
+    where: { category: 'arts-and-crafts'},
+    include: [{
+      model: User,
+      where:{userID: {[op.gt]:0}},
+      include:[{
+        model:UserProfile,
+        where:{[op.and]: [{school:req.params.school}]}
+      }]
+  }]
+     
+  })
 
-router.get('/category/arts-and-crafts',(req, res) => {
-  Product.findAll({where: { category: 'arts-and-crafts'} })
-    .then(post => {
-      if(!post) {
-        return res.sendStatus(404);
-      }
+  .then(post => {
+    if(!post) {
+      return res.sendStatus(404);
+    }
 
-      res.json(post);
-    });
-});
-router.get('/category/other',(req, res) => {
-  Product.findAll({where: { category: 'other'} })
-    .then(post => {
-      if(!post) {
-        return res.sendStatus(404);
-      }
+    res.json(post);
+  });
 
-      res.json(post);
-    });
-});
-router.get('/category/notebooks',(req, res) => {
-  Product.findAll({where: { category: 'notebooks'} })
-    .then(post => {
-      if(!post) {
-        return res.sendStatus(404);
-      }
-
-      res.json(post);
-    });
 });
 
-router.get('/category/bags',(req, res) => {
-  Product.findAll({where: { category: 'bags'} })
-    .then(post => {
-      if(!post) {
-        return res.sendStatus(404);
-      }
 
-      res.json(post);
-    });
+router.get('/category/other/:school',(req, res) => {
+  Product.findAll({
+    
+    where: { category: 'other'},
+    include: [{
+      model: User,
+      where:{userID: {[op.gt]:0}},
+      include:[{
+        model:UserProfile,
+        where:{[op.and]: [{school:req.params.school}]}
+      }]
+  }]
+     
+  })
+
+  .then(post => {
+    if(!post) {
+      return res.sendStatus(404);
+    }
+
+    res.json(post);
+  });
+
 });
-router.get('/category/electronics',(req, res) => {
-  Product.findAll({where: { category: 'electronics'} })
-    .then(post => {
-      if(!post) {
-        return res.sendStatus(404);
-      }
 
-      res.json(post);
-    });
+router.get('/category/notebooks/:school',(req, res) => {
+  Product.findAll({
+    
+    where: { category: 'notebooks'},
+    include: [{
+      model: User,
+      where:{userID: {[op.gt]:0}},
+      include:[{
+        model:UserProfile,
+        where:{[op.and]: [{school:req.params.school}]}
+      }]
+  }]
+     
+  })
+
+  .then(post => {
+    if(!post) {
+      return res.sendStatus(404);
+    }
+
+    res.json(post);
+  });
+
 });
-router.get('/category/class-notes',(req, res) => {
-  Product.findAll({where: { category: 'class-notes'} })
-    .then(post => {
-      if(!post) {
-        return res.sendStatus(404);
-      }
 
-      res.json(post);
-    });
+router.get('/category/bags/:school',(req, res) => {
+  Product.findAll({
+    
+    where: { category: 'bags'},
+    include: [{
+      model: User,
+      where:{userID: {[op.gt]:0}},
+      include:[{
+        model:UserProfile,
+        where:{[op.and]: [{school:req.params.school}]}
+      }]
+  }]
+     
+  })
+
+  .then(post => {
+    if(!post) {
+      return res.sendStatus(404);
+    }
+
+    res.json(post);
+  });
+
 });
-router.get('/category/books',(req, res) => {
-  Product.findAll({where: { category: 'books'} })
-    .then(post => {
-      if(!post) {
-        return res.sendStatus(404);
-      }
 
-      res.json(post);
-    });
+router.get('/category/electronics/:school',(req, res) => {
+  Product.findAll({
+    
+    where: { category: 'electronics'},
+    include: [{
+      model: User,
+      where:{userID: {[op.gt]:0}},
+      include:[{
+        model:UserProfile,
+        where:{[op.and]: [{school:req.params.school}]}
+      }]
+  }]
+     
+  })
+
+  .then(post => {
+    if(!post) {
+      return res.sendStatus(404);
+    }
+
+    res.json(post);
+  });
+
 });
-router.get('/category/textbooks',(req, res) => {
-  Product.findAll({where: { category: 'textbooks'} })
-    .then(post => {
-      if(!post) {
-        return res.sendStatus(404);
-      }
 
-      res.json(post);
-    });
+router.get('/category/class-notes/:school',(req, res) => {
+  Product.findAll({
+    
+    where: { category: 'class-notes'},
+    include: [{
+      model: User,
+      where:{userID: {[op.gt]:0}},
+      include:[{
+        model:UserProfile,
+        where:{[op.and]: [{school:req.params.school}]}
+      }]
+  }]
+     
+  })
+
+  .then(post => {
+    if(!post) {
+      return res.sendStatus(404);
+    }
+
+    res.json(post);
+  });
+
+});
+
+router.get('/category/books/:school',(req, res) => {
+  Product.findAll({
+    
+    where: { category: 'books'},
+    include: [{
+      model: User,
+      where:{userID: {[op.gt]:0}},
+      include:[{
+        model:UserProfile,
+        where:{[op.and]: [{school:req.params.school}]}
+      }]
+  }]
+     
+  })
+
+  .then(post => {
+    if(!post) {
+      return res.sendStatus(404);
+    }
+
+    res.json(post);
+  });
+
+});
+
+router.get('/category/textbooks/:school',(req, res) => {
+  Product.findAll({
+    
+    where: { category: 'textbooks'},
+    include: [{
+      model: User,
+      where:{userID: {[op.gt]:0}},
+      include:[{
+        model:UserProfile,
+        where:{[op.and]: [{school:req.params.school}]}
+      }]
+  }]
+     
+  })
+
+  .then(post => {
+    if(!post) {
+      return res.sendStatus(404);
+    }
+
+    res.json(post);
+  });
+
 });
 
 router.get('/u/:sellerID',(req, res) => {
