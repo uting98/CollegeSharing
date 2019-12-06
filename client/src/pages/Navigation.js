@@ -4,6 +4,7 @@ import {
     NavLink
   } from 'react-router-dom';
 import cookie from "react-cookies";
+import LocalLibraryOutlinedIcon from '@material-ui/icons/LocalLibraryOutlined';
 
 
 class Navigation extends React.Component {
@@ -27,6 +28,8 @@ class Navigation extends React.Component {
     const isAuthenticated = cookie.load("token");
     // console.log("isAuth = " + isAuthenticated);
     return (
+      <nav className="navbar navbar-expand-sm navbar-dark shadow mb-3" style={{backgroundColor: '#800080'}}>
+        <LocalLibraryOutlinedIcon/>
       <nav className="navbar navbar-expand-sm navbar-dark bg-dark shadow mb-3">
         <Link className="navbar-brand" to="/">
           College Sharing
@@ -37,6 +40,11 @@ class Navigation extends React.Component {
               Add Product
             </NavLink>
           </li>
+          <li className="nav-item">
+          <NavLink className="nav-link" exact to="/accountPage">
+            My Account
+          </NavLink>
+        </li>
         </ul>
         {isAuthenticated ? (
           <>

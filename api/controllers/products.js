@@ -224,6 +224,17 @@ router.get('/category/textbooks',(req, res) => {
     });
 });
 
+router.get('/u/:sellerID',(req, res) => {
+  Product.findAll({where: { sellerID: req.params.sellerID} })
+    .then(post => {
+      if(!post) {
+        return res.sendStatus(404);
+      }
+
+      res.json(post);
+    });
+});
+
 
 
 

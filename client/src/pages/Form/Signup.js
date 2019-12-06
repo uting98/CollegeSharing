@@ -57,7 +57,7 @@ class Signup extends React.Component {
         throw new Error("Signup Validation");
       })
       .then(data => {
-        console.log(data);
+        console.log("data is " + data);
         this.setState({
           success: true
         });
@@ -66,7 +66,7 @@ class Signup extends React.Component {
         this.setState({
           error: true
         });
-        console.log(err);
+        console.log("error is " + err);
       });
   }
 
