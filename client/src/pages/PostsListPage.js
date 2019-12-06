@@ -16,13 +16,34 @@ class PostsListPage extends React.Component {
       content: '',
       loading: true,
       isChecked:false,
+      schoolName: 'default',
     }
     this.handleChecked = this.handleChecked.bind(this);
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     console.log("component mount");
-    fetch("/api/products")
+    
+    await fetch("/api/users/school/"+cookie.load('username'))
+
+      .then(res => res.json())
+
+      .then(prod => {
+        console.log(prod +" "+ prod[0] + " " + prod[0].userID + " " + prod[0].school);
+        this.setState({
+          schoolName:prod[0].school
+        },
+        console.log("state saved"));
+
+      })
+
+      .catch(err => console.log("API ERROR: " , err));
+
+      this.getSchoolItems();
+
+  }
+  getSchoolItems = (ev) =>{
+    fetch("/api/products/school/"+this.state.schoolName)
 
       .then(res => res.json())
 
@@ -36,15 +57,14 @@ class PostsListPage extends React.Component {
       })
 
       .catch(err => console.log("API ERROR: " , err));
-
   }
   contentChanged = (event) => {
     
-    //console.log('PREESED ' + this.state.content);
+    console.log('PREESED ' + this.state.content);
     this.setState({
       content: event.target.value,
     }, () => {
-     fetch("/api/products/"+this.state.content)
+     fetch("/api/products/search/"+this.state.schoolName+"/"+this.state.content)
       
     .then(res => res.json())
 
@@ -66,7 +86,7 @@ class PostsListPage extends React.Component {
   handleChecked = ev =>{
   
    // console.log('PREESED ' + ev.currentTarget.value);
-    fetch("/api/products"+ev.currentTarget.value)
+    fetch("/api/products"+ev.currentTarget.value+"/"+this.state.schoolName)
 
       .then(res => res.json())
 
@@ -135,7 +155,7 @@ class PostsListPage extends React.Component {
               <input type="radio" name="example" value="/category/other" onClick={this.handleChecked} onClick={this.handleChecked} style={{marginRight: '15px'}}/>
                 Other
               <br></br>
-              <input type="radio" name="example" value=""  onClick={this.handleChecked}  style={{marginRight: '15px'}} defaultChecked/>
+              <input type="radio" name="example" value=""  onClick={this.getSchoolItems}  style={{marginRight: '15px'}} defaultChecked/>
                 Clear search filiters
               <br></br>
           </div>

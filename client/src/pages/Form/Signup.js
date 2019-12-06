@@ -24,6 +24,7 @@ class Signup extends React.Component {
   }
 
   handleChange = (event) => {
+    console.log(event.target.name + " : " + event.target.value);
     this.setState({ [event.target.name]: event.target.value });
   }
 
@@ -139,7 +140,7 @@ class Signup extends React.Component {
           />
           <label>
             Choose a School
-            <select name="category" value={this.state.category} onChange={this.handleChange}>
+            <select name="school" value={this.state.category} onChange={this.handleChange}>
               <option disabled>Please choose one of the following</option>
               <option value="Baruch College">Baruch College</option>
               <option value="Brooklyn College">Brooklyn College</option>

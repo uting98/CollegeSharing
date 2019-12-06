@@ -59,7 +59,7 @@ class AccountPage extends React.Component {
   showCurrentProducts = ev =>{
     fetch("/api/products/u/"+this.state.currentUserId)
     .then(res => res.json())
-
+    
     .then(prod => {
       console.log("state saved products");
       this.setState({
