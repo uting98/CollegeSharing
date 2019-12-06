@@ -9,10 +9,10 @@ import {
 import Navigation from './pages/Navigation';
 import PostsListPage from './pages/PostsListPage';
 import SubmitProduct from './pages/Form/SubmitProduct';
-import IndividualProduct from "./pages/IndividualProduct";
 import Signup from './pages/Form/Signup';
 import Login from './pages/Form/Login';
 import AccountPage from './pages/AccountPage';
+import IndividualProduct from "./pages/IndividualProduct";
 
 import './App.css';
 

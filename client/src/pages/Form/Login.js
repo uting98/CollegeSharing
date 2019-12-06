@@ -57,7 +57,6 @@ class Login extends React.Component {
         });
         cookie.save("token", this.state.token);
         cookie.save("username", this.state.username);
-        
         window.location.reload()
         // console.log("username = " + cookie.load('username'))
         // console.log("token = " + cookie.load('token'))

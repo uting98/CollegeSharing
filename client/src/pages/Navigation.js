@@ -30,6 +30,7 @@ class Navigation extends React.Component {
     return (
       <nav className="navbar navbar-expand-sm navbar-dark shadow mb-3" style={{backgroundColor: '#800080'}}>
         <LocalLibraryOutlinedIcon/>
+      <nav className="navbar navbar-expand-sm navbar-dark bg-dark shadow mb-3">
         <Link className="navbar-brand" to="/">
           College Sharing
         </Link>
