@@ -11,6 +11,7 @@ class SubmitProduct extends React.Component {
 
     this.state = {
       error: false,
+      imageError: false,
       success: false,
       productName: "",
       description: "",
@@ -65,6 +66,12 @@ class SubmitProduct extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
 
+    if(this.state.imageURL == ''){
+      this.setState({
+        imageError: true,
+      })
+      return false;
+    }
     const header = cookie.load('token');
     
     const productData = {
@@ -111,7 +118,14 @@ class SubmitProduct extends React.Component {
     if (this.state.success) return <Redirect to="/" />;
 
     let errorMessage = null;
-    if (this.state.error) {
+    if (this.state.imageError) {
+      errorMessage = (
+        <div className="alert alert-danger">
+          "Wait for image to upload"
+        </div>
+      );
+    }
+    else if (this.state.error) {
       errorMessage = (
         <div className="alert alert-danger">
           "There was an error submiting this product."
