@@ -8,6 +8,9 @@ const appConfigController = require('./appConfig.js');
 const postProductController = require('./products.js');
 const signUpController = require('./authentication/signup.js');
 const loginController = require('./authentication/login.js');
+const userController = require('./users.js');
+const transactionController = require('./transactions.js');
+
 
 // Mount each controller under a specific route. These
 // will be prefixes to all routes defined inside the controller
@@ -16,6 +19,8 @@ router.use('/application-configuration', appConfigController);
 router.use('/products', postProductController);
 router.use('/signup', signUpController);
 router.use('/signin', loginController);
+router.use('/users', userController);
+router.use('/transactions', transactionController);
 
 
 module.exports = router;

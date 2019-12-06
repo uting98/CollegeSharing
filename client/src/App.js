@@ -11,6 +11,8 @@ import PostsListPage from './pages/PostsListPage';
 import SubmitProduct from './pages/Form/SubmitProduct';
 import Signup from './pages/Form/Signup';
 import Login from './pages/Form/Login';
+import AccountPage from './pages/AccountPage';
+import IndividualProduct from "./pages/IndividualProduct";
 
 import './App.css';
 
@@ -82,6 +84,8 @@ class App extends React.Component {
                 <Route path="/signup" component={Signup} />
                 <Route path="/login" component={Login} />
                 <Route path="/productSubmission" component={SubmitProduct} />
+                <Route path="/accountPage" component={AccountPage} />
+                <Route path="/IndividualProduct" component={IndividualProduct} />
                 <Route path="/" component={PostsListPage} />
               </Switch>
             </div>
