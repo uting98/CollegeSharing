@@ -79,7 +79,7 @@ class Login extends React.Component {
 
     return (
       <Container component="main" maxWidth="xs">
-        <h3>Please enter the following information to Signup an account</h3>
+        <h3 className="loginPage">Login</h3>
         {this.state.success && <Redirect to="/" />}
         {errorMessage}
         <form onSubmit={this.handleSubmit}>
