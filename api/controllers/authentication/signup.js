@@ -6,7 +6,7 @@ router.post('/', async (req,res) => {
   try {
     const { email, username, password, firstName, lastName, school } = req.body;
     const response = await signUpAccount({ email, username, password, firstName, lastName, school });
-    console.log("\n \n \n " + response)
+    console.log(response)
     return res.status(200).json(response);
   } catch (err) {
     console.log(err);
