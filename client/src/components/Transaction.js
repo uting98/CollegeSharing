@@ -6,23 +6,10 @@ import { Link } from 'react-router-dom';
 
 function Transaction({ transactionID, sellerID, buyerID, productID, price, amount, createdAt }) {
 
-    console.log("\n Transaction.js \n");
-    let sellerName = "";
-    let buyerName = "";
-
-   /* const request = async () => {
-        const response = await  fetch("/api/users/"+sellerID)
-        const json = await response.json();
-        console.log("json is "+ json[0].username + "  selletId is "+ sellerID);
-        
-        sellerName = json[0].username;
-        
-    request(); */
-    
-   
+    console.log("\n Transaction.js \n");   
 
   return (
-        <div className="col-12" style={{textAlign:"left"}}>
+        <div className="col-12" style={{width:'100%', textAlign:"left"}}>
             <div>
                 <ul>
                     <li>
@@ -38,7 +25,7 @@ function Transaction({ transactionID, sellerID, buyerID, productID, price, amoun
                         The productID is: {productID}
                     </li>
                     <li>
-                        The price was: {price} per item
+                        The price was: ${price} per item
                     </li>
                     <li>
                         Amount purchased was: {amount}

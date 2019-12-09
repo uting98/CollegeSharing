@@ -82,7 +82,7 @@ class Signup extends React.Component {
     }
 
     return (
-        <Container component="main" maxWidth="xs">
+        <Container component="main" maxWidth="xs" style={{backgroundColor:'white', paddingTop:'2em', paddingBottom:'2em'}}>
         <h3>Please enter the following information to Signup an account</h3>
         {this.state.success && <Redirect to="/login" />}
         {errorMessage}

@@ -88,7 +88,7 @@ componentDidMount() {
 
             <div style={{float:'right', width:'43%', textAlign:'left'}}>
               <h6> Product Name: {this.state.productName} </h6>
-              <h6> Sell By: {this.state.sellerID} </h6>
+              <h6> Sold By: {this.state.sellerID} </h6>
               <h6> Category: {this.state.category} </h6>
               <h6 > Description: 
                 <p className="card mb-4 shadow"> 
@@ -96,7 +96,7 @@ componentDidMount() {
                 </p>
               </h6>
               <h6> Quantity: {this.state.amount}</h6>
-              <h6> Price: {this.state.price}</h6>             
+              <h6> Price: ${this.state.price}</h6>             
             </div>
           </div>
 

@@ -1,17 +1,16 @@
 import React from 'react';
-import Post from '../components/Post';
+//import Post from '../components/Post';
 import Loading from '../components/Loading';
 import Product from '../components/Product';
 import cookie from 'react-cookies';
 import Login from './Form/Login';
 
-
+//import bg from './baruch-3.png';
 
 class PostsListPage extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      posts: [],
       products: [],
       content: '',
       loading: true,
@@ -24,27 +23,24 @@ class PostsListPage extends React.Component {
   async componentDidMount() {
     console.log("component mount");
     
+    //fetch school name
     await fetch("/api/users/school/"+cookie.load('username'))
-
       .then(res => res.json())
-
       .then(prod => {
-        console.log(prod +" "+ prod[0] + " " + prod[0].userID + " " + prod[0].school);
         this.setState({
           schoolName:prod[0].school
         },
         console.log("state saved"));
-
       })
-
       .catch(err => console.log("API ERROR: " , err));
 
-      this.getSchoolItems();
-
+      //then get the products
+      this.getProducts();
   }
-  getSchoolItems = (ev) =>{
-    fetch("/api/products/school/"+this.state.schoolName)
 
+  //fetch only the prodcuts from the current user's school
+  getProducts = (ev) =>{
+    fetch("/api/products/school/"+this.state.schoolName)
       .then(res => res.json())
 
       .then(prod => {
@@ -58,38 +54,46 @@ class PostsListPage extends React.Component {
 
       .catch(err => console.log("API ERROR: " , err));
   }
+
+  //fetch data when textbar's content is changed
   contentChanged = (event) => {
     
     console.log('PREESED ' + this.state.content);
     this.setState({
       content: event.target.value,
     }, () => {
-     fetch("/api/products/search/"+this.state.schoolName+"/"+this.state.content)
-      
-    .then(res => res.json())
+      //if text bar is empty fetch all school products
+      if(this.state.content===""){
+        this.getProducts();
+      }
+      else{
+        //other wise filter school products by textbar content
+        fetch("/api/products/search/"+this.state.schoolName+"/"+this.state.content)
+          
+        .then(res => res.json())
 
-    .then(prod => {
-      this.setState({
-        loading: false,
-        products: prod.map((p,ii) => <Product {...p} key={ii} />),
-       },
-      console.log("state saved"));
+        .then(prod => {
+          console.log(this.state.content+"content over here");
+          this.setState({
+            loading: false,
+            products: prod.map((p,ii) => <Product {...p} key={ii} />),
+          },
+          console.log("state saved"));
 
-    })
+        })
 
-    .catch(err => console.log("API ERROR: " , err));
-    
+        .catch(err => console.log("API ERROR: " , err));
+    }
   });
 
     
   }
+
+  //fetch data when catrgory radio button is pressed
   handleChecked = ev =>{
   
-   // console.log('PREESED ' + ev.currentTarget.value);
-    fetch("/api/products"+ev.currentTarget.value+"/"+this.state.schoolName)
-
+    fetch("/api/products/category/"+this.state.schoolName+"/"+ev.currentTarget.value)
       .then(res => res.json())
-
       .then(prod => {
         this.setState({
           loading: false,
@@ -111,7 +115,8 @@ class PostsListPage extends React.Component {
 
     if(isAuthenticated) {
     return (
-      <div style={{width:'100%'}}>  
+      
+      <div style={{width:'100%', height:'100%'}}>  
       
         <div className="col-12 col-md-12 col-lg-12">
           <div className="input-group">
@@ -128,39 +133,40 @@ class PostsListPage extends React.Component {
 
 
       <div  style={{display:'contents'}}>
-          <div className='filter-category justify-content-left col-3 col-md-3 col-lg-2' style={{background:'#c0c0c0', height:'fit-content', float:'left',textAlign:'left', paddingTop:'10px', paddingBottom:'10px'}}>
-            Catrgories:
+          <div className='filter-category justify-content-left shadow' style={{background:'#87ceeb', height:'fit-content', marginLeft:'0em',float:'left',textAlign:'left',
+           padding:'0.1em 0.5em 0.1em 0.5em',  borderColor:'#FFD700 ',borderWidth:'2px', borderStyle:'solid'}}>
+           <strong>Catrgories:</strong>
               <br></br>
-              <input type="radio" name="example" value="/category/electronics" onClick={this.handleChecked} style={{marginRight: '15px'}}/>
-                Electronics
+              <input type="radio" name="category" value="electronics" onClick={this.handleChecked} style={{marginRight: '1em'}}/>
+                Electronics 
               <br></br>
-              <input type="radio" name="example" value="/category/textbooks" onClick={this.handleChecked} style={{marginRight: '15px'}}/>
-                Textbooks
+              <input type="radio" name="category" value="textbooks" onClick={this.handleChecked} style={{marginRight: '1em'}}/>
+                Textbooks 
               <br></br>
-              <input type="radio" name="example"  value="/category/books"  onClick={this.handleChecked}  style={{marginRight: '15px'}}/>
-                Books
+              <input type="radio" name="category"  value="books"  onClick={this.handleChecked}  style={{marginRight: '1em'}}/>
+                Books 
               <br></br>
-              <input type="radio" name="example" value="/category/class-notes"  onClick={this.handleChecked} style={{marginRight: '15px'}}/>
-                Class Notes
+              <input type="radio" name="category" value="/class-notes"  onClick={this.handleChecked} style={{marginRight: '1em'}}/>
+                Class Notes 
               <br></br>
-              <input type="radio" name="example" value="/category/arts-and-crafts" onClick={this.handleChecked} style={{marginRight: '15px'}}/>
-                Arts &amp; Crafts
+              <input type="radio" name="category" value="/arts-and-crafts" onClick={this.handleChecked} style={{marginRight: '1em'}}/>
+                Arts &amp; Crafts 
               <br></br>
-              <input type="radio" name="example" value="/category/notebooks" onClick={this.handleChecked} style={{marginRight: '15px'}}/>
-                Notebooks
+              <input type="radio" name="category" value="/notebooks" onClick={this.handleChecked} style={{marginRight: '1em'}}/>
+                Notebooks 
               <br></br>
-              <input type="radio" name="example" value="/category/bags" onClick={this.handleChecked} style={{marginRight: '15px'}}/>
-                Bags
+              <input type="radio" name="category" value="/bags" onClick={this.handleChecked} style={{marginRight: '1em'}}/>
+                Bags 
               <br></br>
-              <input type="radio" name="example" value="/category/other" onClick={this.handleChecked} onClick={this.handleChecked} style={{marginRight: '15px'}}/>
-                Other
+              <input type="radio" name="category" value="/other" onClick={this.handleChecked} onClick={this.handleChecked} style={{marginRight: '1em'}}/>
+                Other 
               <br></br>
-              <input type="radio" name="example" value=""  onClick={this.getSchoolItems}  style={{marginRight: '15px'}} defaultChecked/>
-                Clear search filiters
+              <input type="radio" name="category" value=""  onClick={this.getProducts}  style={{marginRight: '1em'}} defaultChecked/>
+                Clear search filiters 
               <br></br>
           </div>
         
-          <div className="row justify-content-center col-9 col-md-9 col-lg-10" style={{marginLeft: '150px', marginRight: '50px' }}>
+          <div className="row justify-content-center" style={{paddingLeft: '0em', paddingRight: '0em' }}>
             {this.state.products}
           </div>
 
@@ -177,45 +183,3 @@ class PostsListPage extends React.Component {
 }
 
 export default PostsListPage;
-
-/*
-
-import React from 'react';
-import Post from '../components/Post';
-import Loading from '../components/Loading';
-
-
-class PostsListPage extends React.Component {
-  state = {
-    posts: [],
-    loading: true,
-  }
-
-  componentDidMount() {
-    fetch("/api/posts")
-      .then(res => res.json())
-      .then(posts => {
-        this.setState({
-          loading: false,
-          posts: posts.map((p,ii) => <Post {...p} key={ii} />),
-        });
-      })
-      .catch(err => console.log("API ERROR: ", err));
-  }
-
-  render() {
-    if(this.state.loading) {
-      return <Loading />;
-    }
-
-    return (
-      <div className="container-fluid text-center">
-        <div className="row justify-content-center">
-          { this.state.posts }
-        </div>
-      </div>
-    );
-  }
-}
-
-export default PostsListPage;*/

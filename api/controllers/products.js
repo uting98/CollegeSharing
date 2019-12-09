@@ -11,26 +11,17 @@ const op = Sequelize.Op;
 const { tokenAuthentiation } = require('./user');
 //import cookie from "react-cookies";
 
-// This is a simple example for providing basic CRUD routes for
-// a resource/model. It provides the following:
-//    GET    /posts
-//    POST   /posts
-//    GET    /posts/:id
-//    PUT    /posts/:id
-//    DELETE /posts/:id 
-
-// There are other styles for creating these route handlers, we typically
-// explore other patterns to reduce code duplication.
-// TODO: Can you spot where we have some duplication below?
 
 console.log("INSIDE PRODUCTS");
+
+//get all products
 router.get('/', async (req,res) => {
   try{
     // req.userID = await tokenAuthentiation(req.headers.authorization);
     Product.findAll({})
-    .then(posts =>{ res.json(posts);
+    .then(prods =>{ res.json(prods);
       
-    //console.log("INSIDE GET REQ   "+posts);
+    //console.log("INSIDE GET REQ   "+prods);
     })
   }catch(err){
     res.status(500).json({"message": err.message});
@@ -38,6 +29,7 @@ router.get('/', async (req,res) => {
 
 });
 
+//post product
 router.post('/', async (req,res) => {
   console.log("POST body: ", req.body);
   req.body.sellerID = await tokenAuthentiation(req.headers.authorization);
@@ -61,21 +53,8 @@ router.post('/', async (req,res) => {
     });
 })
 
-// router.post('/', (req, res) => {
-//   let { content } = req.body;
-//  // console.log("INSIDE THE POST    " + req.body);
-  
-//   Product.create(req.body)
-//     .then(post => {
-//       res.status(201).json(post);
-//     })
-//     .catch(err => {
-//       res.status(400).json(err);
-//     });
-// });
-
-
-router.get('/search/:school/:productName',(req, res) => {//where: { productName:{ [op.iLike] :'%'+req.params.productName+'%'}}
+//find all products at user's school where the product name contains the param
+router.get('/search/:school/:productName',(req, res) => {
   console.log(req.params.productName+" "+req.params.school);
 
   Product.findAll({
@@ -92,71 +71,22 @@ router.get('/search/:school/:productName',(req, res) => {//where: { productName:
      
   })
 
-  .then(post => {
-    if(!post) {
+  .then(prod => {
+    if(!prod) {
       return res.sendStatus(404);
     }
 
-    res.json(post);
+    res.json(prod);
   });
 
 });
 
 
-router.get('/:id', (req, res) => {
-  
-  const { id } = req.params;
-  Product.findByPk(id)
-    .then(post => {
-      if(!post) {
-        return res.sendStatus(404);
-      }
 
-      res.json(post);
-    });
-});
-
-
-
-router.put('/:id', (req, res) => {
-  const { id } = req.params;
-  Product.findByPk(id)
-    .then(post => {
-      if(!post) {
-        return res.sendStatus(404);
-      }
-
-      post.content = req.body.content;
-      post.save()
-        .then(post => {
-          res.json(post);
-        })
-        .catch(err => {
-          res.status(400).json(err);
-        });
-    });
-});
-
-
-router.delete('/:id', (req, res) => {
-  const { id } = req.params;
-  Product.findByPk(id)
-    .then(post => {
-      if(!post) {
-        return res.sendStatus(404);
-      }
-
-      post.destroy();
-      res.sendStatus(204);
-    });
-});
-
-
+  // Find all products where the user's school matches the param 
 router.get('/school/:school', (req, res) => {
- // let x = cookie.load('username');
-  let y ;
-  console.log("\n school \n \n ");// + req.params.username+ "   "+ req.params.userID);
-  // Find all projects with a least one task where task.state === project.state
+
+  console.log("\n GETTING PRODUCTS BY school \n \n ");
   Product.findAll({
     include: [{
       model: User,
@@ -168,26 +98,24 @@ router.get('/school/:school', (req, res) => {
   }]
      
   },
-  console.log("\n found"))   .then(post => {
-    if(!post ){
+  console.log("\n found"))   .then(prod => {
+    if(!prod ){
 
       return res.sendStatus(404);
     }
 
-    res.json(post);
+    res.json(prod);
   });
 
 });
 
 
 
-//router.get for each categories
-//I couldnt get this working in a better way so I used this kind of brute force approach
-
-router.get('/category/arts-and-crafts/:school',(req, res) => {
+//find all products for a certian category at the user's school 
+router.get('/category/:school/:category',(req, res) => {
   Product.findAll({
     
-    where: { category: 'arts-and-crafts'},
+    where: { category: req.params.category},
     include: [{
       model: User,
       where:{userID: {[op.gt]:0}},
@@ -199,236 +127,28 @@ router.get('/category/arts-and-crafts/:school',(req, res) => {
      
   })
 
-  .then(post => {
-    if(!post) {
+  .then(prod => {
+    if(!prod) {
       return res.sendStatus(404);
     }
 
-    res.json(post);
+    res.json(prod);
   });
 
 });
 
 
-router.get('/category/other/:school',(req, res) => {
-  Product.findAll({
-    
-    where: { category: 'other'},
-    include: [{
-      model: User,
-      where:{userID: {[op.gt]:0}},
-      include:[{
-        model:UserProfile,
-        where:{[op.and]: [{school:req.params.school}]}
-      }]
-  }]
-     
-  })
-
-  .then(post => {
-    if(!post) {
-      return res.sendStatus(404);
-    }
-
-    res.json(post);
-  });
-
-});
-
-router.get('/category/notebooks/:school',(req, res) => {
-  Product.findAll({
-    
-    where: { category: 'notebooks'},
-    include: [{
-      model: User,
-      where:{userID: {[op.gt]:0}},
-      include:[{
-        model:UserProfile,
-        where:{[op.and]: [{school:req.params.school}]}
-      }]
-  }]
-     
-  })
-
-  .then(post => {
-    if(!post) {
-      return res.sendStatus(404);
-    }
-
-    res.json(post);
-  });
-
-});
-
-router.get('/category/bags/:school',(req, res) => {
-  Product.findAll({
-    
-    where: { category: 'bags'},
-    include: [{
-      model: User,
-      where:{userID: {[op.gt]:0}},
-      include:[{
-        model:UserProfile,
-        where:{[op.and]: [{school:req.params.school}]}
-      }]
-  }]
-     
-  })
-
-  .then(post => {
-    if(!post) {
-      return res.sendStatus(404);
-    }
-
-    res.json(post);
-  });
-
-});
-
-router.get('/category/electronics/:school',(req, res) => {
-  Product.findAll({
-    
-    where: { category: 'electronics'},
-    include: [{
-      model: User,
-      where:{userID: {[op.gt]:0}},
-      include:[{
-        model:UserProfile,
-        where:{[op.and]: [{school:req.params.school}]}
-      }]
-  }]
-     
-  })
-
-  .then(post => {
-    if(!post) {
-      return res.sendStatus(404);
-    }
-
-    res.json(post);
-  });
-
-});
-
-router.get('/category/class-notes/:school',(req, res) => {
-  Product.findAll({
-    
-    where: { category: 'class-notes'},
-    include: [{
-      model: User,
-      where:{userID: {[op.gt]:0}},
-      include:[{
-        model:UserProfile,
-        where:{[op.and]: [{school:req.params.school}]}
-      }]
-  }]
-     
-  })
-
-  .then(post => {
-    if(!post) {
-      return res.sendStatus(404);
-    }
-
-    res.json(post);
-  });
-
-});
-
-router.get('/category/books/:school',(req, res) => {
-  Product.findAll({
-    
-    where: { category: 'books'},
-    include: [{
-      model: User,
-      where:{userID: {[op.gt]:0}},
-      include:[{
-        model:UserProfile,
-        where:{[op.and]: [{school:req.params.school}]}
-      }]
-  }]
-     
-  })
-
-  .then(post => {
-    if(!post) {
-      return res.sendStatus(404);
-    }
-
-    res.json(post);
-  });
-
-});
-
-router.get('/category/textbooks/:school',(req, res) => {
-  Product.findAll({
-    
-    where: { category: 'textbooks'},
-    include: [{
-      model: User,
-      where:{userID: {[op.gt]:0}},
-      include:[{
-        model:UserProfile,
-        where:{[op.and]: [{school:req.params.school}]}
-      }]
-  }]
-     
-  })
-
-  .then(post => {
-    if(!post) {
-      return res.sendStatus(404);
-    }
-
-    res.json(post);
-  });
-
-});
-
+//find all products sold by a user
 router.get('/u/:sellerID',(req, res) => {
   Product.findAll({where: { sellerID: req.params.sellerID} })
-    .then(post => {
-      if(!post) {
+    .then(prod => {
+      if(!prod) {
         return res.sendStatus(404);
       }
 
-      res.json(post);
+      res.json(prod);
     });
 });
-
-
-
-
-/*
-This was what was orignially here I'm leaving this here just in case we need it later. The post isn't working I'm trying to fix it.
-
-const db = require('../models');
-const { Product } = db;
-
-module.exports = {
-  postProduct(req,res){
-    console.log("POST body: ", req.body);
-    const {productName, price, amount, description, sellerID, category, imageURL} = req.body;
-    Product.create({
-      productName, 
-      price, 
-      amount, 
-      description, 
-      sellerID, 
-      category,
-      imageURL,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    })
-      .then((product) => {
-        res.status(200).json(product);
-      })
-      .catch((err) => {
-        res.status(400).json({ msg: 'Failed to submit product', err });
-      });
-  }
-}
-*/
 
 
 module.exports = router;
