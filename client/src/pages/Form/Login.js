@@ -79,40 +79,42 @@ class Login extends React.Component {
 
     return (
       <Container component="main" maxWidth="xs">
-        <h3 className="loginPage">Login</h3>
-        {this.state.success && <Redirect to="/" />}
-        {errorMessage}
-        <form onSubmit={this.handleSubmit}>
-          <TextField
-            label="username"
-            name="username"
-            fullWidth
-            margin="normal"
-            type="text"
-            required
-            onChange={this.handleChange}
-            variant="outlined"
-          />
-          <TextField
-            label="password"
-            name="password"
-            fullWidth
-            margin="normal"
-            type="text"
-            required
-            onChange={this.handleChange}
-            variant="outlined"
-          />
-          <Button
-            type="submit"
-            fullWidth
-            size="small"
-            variant="contained"
-            color="primary"
-          >
-            Login
-          </Button>
-        </form>
+        <div style={{backgroundColor:'white', padding:'0em 2em 2em 2em'}}>
+          <h3 style={{paddingTop:'0.5em'}}className="loginPage">Login</h3>
+          {this.state.success && <Redirect to="/" />}
+          {errorMessage}
+          <form onSubmit={this.handleSubmit}>
+            <TextField
+              label="username"
+              name="username"
+              fullWidth
+              margin="normal"
+              type="text"
+              required
+              onChange={this.handleChange}
+              variant="outlined"
+            />
+            <TextField
+              label="password"
+              name="password"
+              fullWidth
+              margin="normal"
+              type="text"
+              required
+              onChange={this.handleChange}
+              variant="outlined"
+            />
+            <Button
+              type="submit"
+              fullWidth
+              size="small"
+              variant="contained"
+              color="primary"
+            >
+              Login
+            </Button>
+          </form>
+        </div>
       </Container>
     );
   }

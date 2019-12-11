@@ -28,7 +28,7 @@ class Navigation extends React.Component {
     const isAuthenticated = cookie.load("token");
     // console.log("isAuth = " + isAuthenticated);
     return (
-      <nav className="navbar navbar-expand-sm navbar-dark shadow mb-3" style={{backgroundColor: '#800080'}}>
+      <nav className="navbar navbar-expand-sm navbar-light shadow mb-3" style={{backgroundColor: 'lightblue'}}>
         
         <Link className="navbar-brand" to="/">
         <LocalLibraryOutlinedIcon/>
@@ -44,6 +44,11 @@ class Navigation extends React.Component {
           <li className="nav-item">
           <NavLink className="nav-link" exact to="/accountPage">
             My Account
+          </NavLink>
+        </li>
+        <li className="nav-item">
+          <NavLink className="nav-link" exact to="/about">
+            About Us
           </NavLink>
         </li>
         </ul>

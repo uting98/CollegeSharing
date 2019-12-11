@@ -67,7 +67,10 @@ router.get('/search/:school/:productName',(req, res) => {
         model:UserProfile,
         where:{[op.and]: [{school:req.params.school}]}
       }]
-  }]
+  }],
+  order: [
+    ['productID','ASC']
+  ]
      
   })
 
@@ -95,7 +98,10 @@ router.get('/school/:school', (req, res) => {
         model:UserProfile,
         where:{[op.and]: [{school:req.params.school}]}
       }]
-  }]
+  }],
+  order: [
+    ['productID','ASC']
+  ]
      
   },
   console.log("\n found"))   .then(prod => {
@@ -123,7 +129,10 @@ router.get('/category/:school/:category',(req, res) => {
         model:UserProfile,
         where:{[op.and]: [{school:req.params.school}]}
       }]
-  }]
+  }],
+  order: [
+    ['productID','ASC']
+  ]
      
   })
 
@@ -149,6 +158,29 @@ router.get('/u/:sellerID',(req, res) => {
       res.json(prod);
     });
 });
+
+//set the amount for the corresponding product to the remaining parameter
+router.put('/amount/:productID/:remaining', (req, res) => {
+  console.log("\n \n INSIDE PUT \n\n");
+  const { id } = req.params;
+  console.log("amount is " + req.params.amount + "  "+ req.params.productID + "  " + req.body.quant + "  "+ req.body.toString()+"  "+req.body[0]+"  ")
+  Product.update({
+    amount: req.params.remaining,
+  }, {
+    where: {
+      productID: req.params.productID
+    }
+  })
+  .then(prod => {
+    if(!prod) {
+      return res.sendStatus(404);
+    }
+
+    res.json(prod);
+  });
+
+});
+
 
 
 module.exports = router;

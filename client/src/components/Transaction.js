@@ -1,13 +1,9 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-
-
 
 
 function Transaction({ transactionID, sellerID, buyerID, productID, price, amount, createdAt }) {
 
     console.log("\n Transaction.js \n");   
-
   return (
         <div className="col-12" style={{width:'100%', textAlign:"left"}}>
             <div>

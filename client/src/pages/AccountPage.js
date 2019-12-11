@@ -29,10 +29,10 @@ class AccountPage extends React.Component {
       .then(user => {
         console.log("state saved");
         this.setState({
-          //save nessary info from user profile
-          school:user[0].school,
-          first:user[0].firstName,
-          last:user[0].lastName,
+          //save necessary info from user profile
+          school: user[0].school,
+          first: user[0].firstName,
+          last: user[0].lastName,
         },
         console.log("content " + this.state.content),
         );
@@ -93,6 +93,7 @@ class AccountPage extends React.Component {
   }
 
   fetchSoldProducts = ev => {
+    //fetch transactions by the sellerID, here the seller is the current user
     fetch("/api/transactions/seller/"+this.state.currentUserId)
       .then(res => res.json())
 
@@ -112,7 +113,7 @@ class AccountPage extends React.Component {
   }
 
   fetchBoughtProducts = ev =>{
-     
+     //fetch transactions by the buyerID, here the buyer is the current user
     fetch("/api/transactions/buyer/"+this.state.currentUserId)
     .then(res => res.json())
 
@@ -135,66 +136,64 @@ class AccountPage extends React.Component {
     const isAuthenticated = cookie.load("token");
   
     if(isAuthenticated) {
-    let errorMessage = null;
+      let errorMessage = null;
 
-    if(this.state.loading) {
-      return <Loading />;
-    }
+      if(this.state.loading) {
+        return <Loading />;
+      }
 
-    else if (this.state.content[0] === undefined) {
-      errorMessage = (
-        <div className="alert alert-warning">
-          "No relavent information to show"
-        </div>
-      );
-    }
-    return (
-      <div style={{width:'100%'}}>  
-        {errorMessage}
+      else if (this.state.content[0] === undefined) {
+        errorMessage = (
+          <div className="alert alert-warning">
+            "No relavent information to show"
+          </div>
+        );
+      }
+
+      return (
+        <div style={{width:'100%'}}>  
+               {errorMessage}
+          <div className="row" style={{display:'contents', overflow:'hidden'}}>
     
-
-        <div style={{display:'contents', overflow:'hidden'}}>
-   
-      
-          <div className='filter-category justify-content-left shadow' style={{background:'#c0c0c0', height:'fit-content',float:'left',textAlign:'left',
-            padding:'0.1em 0.5em 0.1em 0.5em', borderColor:'#FFD700 ',borderWidth:'2px', borderStyle:'solid',marginRight:'2em'}}>
-              <strong>Catrgories:</strong>
+            <div className='col-xs-12 col-sm-2 col-md-2 col-lg-2 filter-category justify-content-left shadow' style={{overflow:'hidden', background:'#c0c0c0', height:'fit-content',float:'left',textAlign:'left',
+              padding:'0.1em 0.5em 0.1em 0.5em', borderColor:'#FFD700 ',borderWidth:'2px', borderStyle:'solid',marginRight:'2em', marginBottom:'2em'}}>
+                <strong>Catrgories:</strong>
+                  <br/>
+                <input type="radio" name="account"  onClick={this.fetchUser} style={{marginRight: '1em'}} defaultChecked/>
+                  User Info
                 <br/>
-              <input type="radio" name="account"  onClick={this.fetchUser} style={{marginRight: '1em'}} defaultChecked/>
-                User Info
-              <br/>
-              <input type="radio" name="account" onClick={this.fetchCurrentProducts} style={{marginRight: '1em'}}/>
-                On Sale
-              <br/>
-              <input type="radio" name="account"  onClick={this.fetchSoldProducts}  style={{marginRight: '1em'}}/>
-                Products Sold
-              <br/>
-              <input type="radio" name="account"   onClick={this.fetchBoughtProducts}  style={{marginRight: '1em'}}/>
-                Products Bought
-              <br/>
-          </div>
-      
-          <div className="row justify-content-center" style={{ marginRight:'2em',marginLeft:'0em', }}>
-            <div style={{ backgroundColor:'white', width:'100%' }}>
-                <h2>{this.state.title}</h2>
-                <div className="row justify-content-center" style={{}} >
-                  {this.state.content}  
-                </div>          
+                <input type="radio" name="account" onClick={this.fetchCurrentProducts} style={{marginRight: '1em'}}/>
+                  On Sale
+                <br/>
+                <input type="radio" name="account"  onClick={this.fetchSoldProducts}  style={{marginRight: '1em'}}/>
+                  Products Sold
+                <br/>
+                <input type="radio" name="account"   onClick={this.fetchBoughtProducts}  style={{marginRight: '1em'}}/>
+                  Products Bought
+                <br/>
             </div>
-          
-          </div>
-      </div>
+            
+            <div className="col-xs-12 col-sm-9 col-md-9 col-lg-9 row justify-content-center" style={{}}>
+              <div style={{ backgroundColor:'white', width:'100%' }}>
+                  <h2>{this.state.title}</h2>
+                  <div className="row justify-content-center" style={{overflow:'hidden'}} >
+                    {this.state.content}  
+                  </div>          
+              </div>
+            
+            </div>
+        </div>
 
-     
-    </div>
-    );
-    }
-    else{
-      return(
-        <Login />
+      
+      </div>
       );
+      }
+      else{
+        return(
+          <Login />
+        );
+      }
     }
-  }
 }
 
 export default AccountPage;

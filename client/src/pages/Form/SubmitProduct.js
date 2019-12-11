@@ -18,7 +18,7 @@ class SubmitProduct extends React.Component {
       description: "",
       price: "",
       amount: "",
-      category: "Textbook",
+      category: "textbook",
       image: null,
       imageURL: "",
     };
@@ -209,7 +209,7 @@ class SubmitProduct extends React.Component {
           <div className="form-group">
             {/* <label htmlFor="exampleFormControlFile1">Image Upload</label> */}
             <input type="file" className="form-control-file" accept="image/*" onChange={this.handleImgChange} required />
-            <img className="imgUpload" src={this.state.imageURL} />
+            <img className="imgUpload" alt="user selected product" src={this.state.imageURL} />
           </div>
           <Button
             type="submit"

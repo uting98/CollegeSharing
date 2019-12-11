@@ -5,8 +5,6 @@ import Product from '../components/Product';
 import cookie from 'react-cookies';
 import Login from './Form/Login';
 
-//import bg from './baruch-3.png';
-
 class PostsListPage extends React.Component {
   constructor(props){
     super(props);
@@ -132,9 +130,9 @@ class PostsListPage extends React.Component {
       </div>
 
 
-      <div  style={{display:'contents'}}>
-          <div className='filter-category justify-content-left shadow' style={{background:'#87ceeb', height:'fit-content', marginLeft:'0em',float:'left',textAlign:'left',
-           padding:'0.1em 0.5em 0.1em 0.5em',  borderColor:'#FFD700 ',borderWidth:'2px', borderStyle:'solid'}}>
+      <div  className='row' style={{display:'contents'}}>
+          <div className='col-xs-12 col-sm-2 col-md-2 col-lg-2 filter-category justify-content-left shadow' style={{overflow:'hidden',background:'#87ceeb', height:'fit-content', marginRight:'0em',float:'left',textAlign:'left',
+           padding:'0.1em 0.5em 0.1em 0.5em',  borderColor:'#FFD700 ',borderWidth:'2px', borderStyle:'solid', marginBottom:'2em'}}>
            <strong>Catrgories:</strong>
               <br></br>
               <input type="radio" name="category" value="electronics" onClick={this.handleChecked} style={{marginRight: '1em'}}/>
@@ -146,19 +144,19 @@ class PostsListPage extends React.Component {
               <input type="radio" name="category"  value="books"  onClick={this.handleChecked}  style={{marginRight: '1em'}}/>
                 Books 
               <br></br>
-              <input type="radio" name="category" value="/class-notes"  onClick={this.handleChecked} style={{marginRight: '1em'}}/>
+              <input type="radio" name="category" value="class-notes"  onClick={this.handleChecked} style={{marginRight: '1em'}}/>
                 Class Notes 
               <br></br>
-              <input type="radio" name="category" value="/arts-and-crafts" onClick={this.handleChecked} style={{marginRight: '1em'}}/>
+              <input type="radio" name="category" value="arts-and-crafts" onClick={this.handleChecked} style={{marginRight: '1em'}}/>
                 Arts &amp; Crafts 
               <br></br>
-              <input type="radio" name="category" value="/notebooks" onClick={this.handleChecked} style={{marginRight: '1em'}}/>
+              <input type="radio" name="category" value="notebooks" onClick={this.handleChecked} style={{marginRight: '1em'}}/>
                 Notebooks 
               <br></br>
-              <input type="radio" name="category" value="/bags" onClick={this.handleChecked} style={{marginRight: '1em'}}/>
+              <input type="radio" name="category" value="bags" onClick={this.handleChecked} style={{marginRight: '1em'}}/>
                 Bags 
               <br></br>
-              <input type="radio" name="category" value="/other" onClick={this.handleChecked} onClick={this.handleChecked} style={{marginRight: '1em'}}/>
+              <input type="radio" name="category" value="other" onClick={this.handleChecked} style={{marginRight: '1em'}}/>
                 Other 
               <br></br>
               <input type="radio" name="category" value=""  onClick={this.getProducts}  style={{marginRight: '1em'}} defaultChecked/>
@@ -166,7 +164,7 @@ class PostsListPage extends React.Component {
               <br></br>
           </div>
         
-          <div className="row justify-content-center" style={{paddingLeft: '0em', paddingRight: '0em' }}>
+          <div className="col-xs-12 col-sm-10 col-md-10 col-lg-10 row justify-content-center" style={{marginLeft: '0em', paddingRight: '0em' }}>
             {this.state.products}
           </div>
 
