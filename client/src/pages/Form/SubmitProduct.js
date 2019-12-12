@@ -4,6 +4,7 @@ import { Button } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import { storage } from "../../firebase";
 import cookie from "react-cookies";
+import Login from './Login';
 
 class SubmitProduct extends React.Component {
   constructor(props) {
@@ -17,7 +18,7 @@ class SubmitProduct extends React.Component {
       description: "",
       price: "",
       amount: "",
-      category: "Textbook",
+      category: "textbook",
       image: null,
       imageURL: "",
     };
@@ -132,9 +133,12 @@ class SubmitProduct extends React.Component {
         </div>
       );
     }
+    const isAuthenticated = cookie.load("token");
+  
+    if(isAuthenticated) {
 
     return (
-      <div className="col-10 col-md-8 col-lg-7">
+      <div className="col-10 col-md-8 col-lg-7" style={{backgroundColor:'white', padding:'2em 2em 2em 1em'}}>
         <h3>
           Please enter following information for submitting product to sell
         </h3>
@@ -205,7 +209,7 @@ class SubmitProduct extends React.Component {
           <div className="form-group">
             {/* <label htmlFor="exampleFormControlFile1">Image Upload</label> */}
             <input type="file" className="form-control-file" accept="image/*" onChange={this.handleImgChange} required />
-            <img className="imgUpload" src={this.state.imageURL} />
+            <img className="imgUpload" alt="user selected product" src={this.state.imageURL} />
           </div>
           <Button
             type="submit"
@@ -219,6 +223,12 @@ class SubmitProduct extends React.Component {
         </form>
       </div>
     );
+  }
+    else{
+      return(
+        <Login />
+      )
+    }
   }
 }
 

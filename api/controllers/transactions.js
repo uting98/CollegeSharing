@@ -6,18 +6,6 @@ const Sequelize = require('sequelize');
 const op = Sequelize.Op;
 
 
-// This is a simple example for providing basic CRUD routes for
-// a resource/model. It provides the following:
-//    GET    /posts
-//    POST   /posts
-//    GET    /posts/:id
-//    PUT    /posts/:id
-//    DELETE /posts/:id 
-
-// There are other styles for creating these route handlers, we typically
-// explore other patterns to reduce code duplication.
-// TODO: Can you spot where we have some duplication below?
-
 //console.log("\n \n INSIDE transactions.js \n \n");
 router.get('/', (req,res) => {
     Transaction.findAll({where: {sellerID: {[op.lte]: 1}} } )

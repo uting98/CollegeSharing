@@ -1,10 +1,12 @@
 import React from 'react';
 import Loading from '../components/Loading';
-import User from '../components/UserInfo';
+import UserInfo from '../components/UserInfo';
 import Product from'../components/Product';
 
+import Login from './Form/Login';
+
 import Transaction from'../components/Transaction';
-import { display } from '@material-ui/system';
+//import { display } from '@material-ui/system';
 import cookie from "react-cookies";
 class AccountPage extends React.Component {
   state = {
@@ -12,40 +14,54 @@ class AccountPage extends React.Component {
     currentUserName: cookie.load('username'),
     currentUserId: 1,
     loading: true,
+    school:'def',
+    first:'def',
+    last:'def',
   }
 
-
-  componentDidMount() {
+  async componentDidMount() {
     console.log("component mount cookie is " + cookie.load('username'));
-    fetch("/api/users/username/"+this.state.currentUserName)
+    
+    //fetch user profile
+    await fetch("/api/users/school/"+this.state.currentUserName)
       .then(res => res.json())
 
       .then(user => {
         console.log("state saved");
         this.setState({
-          loading: false, 
-          content: user.map((p,ii) => <User {...p} key={ii} />),
-          currentUserId: user[0].userID,
-          title: "Your user info is:"
+          //save necessary info from user profile
+          school: user[0].school,
+          first: user[0].firstName,
+          last: user[0].lastName,
         },
         console.log("content " + this.state.content),
         );
 
-      })
+    })
 
-      .catch(err => console.log("API ERROR: " , err));
+    .catch(err => console.log("API ERROR: " , err));
+
+
+    //then fetch user
+    this.fetchUser();
+
   }
 
 
-  showUser = ev =>{
-    fetch("/api/users/"+this.state.currentUserId)
+  fetchUser = ev =>{
+
+    fetch("/api/users/username/"+this.state.currentUserName)
     .then(res => res.json())
 
     .then(user => {
+      console.log("state saved");
       this.setState({
-        loading: false, 
-        content: user.map((p,ii) => <User {...p} key={ii} />),
-        title: "Your user info is:"
+        loading: false,
+        //create user info 
+        content: user.map((p,ii) => <UserInfo  {...p} school= {this.state.school} first = {this.state.first} last = {this.state.last} key={ii} />),
+        currentUserId: user[0].userID,
+        title: "Your user info is:",
+        
       },
       console.log("content " + this.state.content),
       );
@@ -53,10 +69,12 @@ class AccountPage extends React.Component {
     })
 
     .catch(err => console.log("API ERROR: " , err));
+
   }
 
 
-  showCurrentProducts = ev =>{
+  fetchCurrentProducts = ev =>{
+    //fetch products by userID
     fetch("/api/products/u/"+this.state.currentUserId)
     .then(res => res.json())
     
@@ -74,7 +92,8 @@ class AccountPage extends React.Component {
     .catch(err => console.log("API ERROR: products " , err));
   }
 
-  showSoldProducts = ev => {
+  fetchSoldProducts = ev => {
+    //fetch transactions by the sellerID, here the seller is the current user
     fetch("/api/transactions/seller/"+this.state.currentUserId)
       .then(res => res.json())
 
@@ -92,8 +111,9 @@ class AccountPage extends React.Component {
       .catch(err => console.log("API ERROR: transaction " , err));
 
   }
-   showBoughtProducts = ev =>{
-     
+
+  fetchBoughtProducts = ev =>{
+     //fetch transactions by the buyerID, here the buyer is the current user
     fetch("/api/transactions/buyer/"+this.state.currentUserId)
     .then(res => res.json())
 
@@ -113,57 +133,67 @@ class AccountPage extends React.Component {
 
   render() {
       
-    let errorMessage = null;
-    if(this.state.loading) {
-      return <Loading />;
-    }
-    else if (this.state.content[0] === undefined) {
-      errorMessage = (
-        <div className="alert alert-warning">
-          "No relavent information to show"
+    const isAuthenticated = cookie.load("token");
+  
+    if(isAuthenticated) {
+      let errorMessage = null;
+
+      if(this.state.loading) {
+        return <Loading />;
+      }
+
+      else if (this.state.content[0] === undefined) {
+        errorMessage = (
+          <div className="alert alert-warning">
+            "No relavent information to show"
+          </div>
+        );
+      }
+
+      return (
+        <div style={{width:'100%'}}>  
+               {errorMessage}
+          <div className="row" style={{display:'contents', overflow:'hidden'}}>
+    
+            <div className='col-xs-12 col-sm-2 col-md-2 col-lg-2 filter-category justify-content-left shadow' style={{overflow:'hidden', background:'#c0c0c0', height:'fit-content',float:'left',textAlign:'left',
+              padding:'0.1em 0.5em 0.1em 0.5em', borderColor:'#FFD700 ',borderWidth:'2px', borderStyle:'solid',marginRight:'2em', marginBottom:'2em'}}>
+                <strong>Catrgories:</strong>
+                  <br/>
+                <input type="radio" name="account"  onClick={this.fetchUser} style={{marginRight: '1em'}} defaultChecked/>
+                  User Info
+                <br/>
+                <input type="radio" name="account" onClick={this.fetchCurrentProducts} style={{marginRight: '1em'}}/>
+                  On Sale
+                <br/>
+                <input type="radio" name="account"  onClick={this.fetchSoldProducts}  style={{marginRight: '1em'}}/>
+                  Products Sold
+                <br/>
+                <input type="radio" name="account"   onClick={this.fetchBoughtProducts}  style={{marginRight: '1em'}}/>
+                  Products Bought
+                <br/>
+            </div>
+            
+            <div className="col-xs-12 col-sm-9 col-md-9 col-lg-9 row justify-content-center" style={{}}>
+              <div style={{ backgroundColor:'white', width:'100%' }}>
+                  <h2>{this.state.title}</h2>
+                  <div className="row justify-content-center" style={{overflow:'hidden'}} >
+                    {this.state.content}  
+                  </div>          
+              </div>
+            
+            </div>
         </div>
-      );
-    }
 
-    return (
       
-      <div style={{width:'100%'}}>  
-        {errorMessage}
-      <span className="container-fluid text-center">
-       
-      <div  style={{display:'contents'}}>
-          <div className='filter-category justify-content-left col-3 col-md-3 col-lg-2' style={{background:'#c0c0c0', height:'fit-content', float:'left',textAlign:'left', paddingTop:'10px', paddingBottom:'10px'}}>
-            Catrgories:
-              <br></br>
-              <input type="radio" name="example" value="users/" onClick={this.showUser} style={{marginRight: '15px'}} defaultChecked/>
-                User Info
-              <br></br>
-              <input type="radio" name="example" value="/category/textbooks" onClick={this.showCurrentProducts} style={{marginRight: '15px'}}/>
-                On Sale
-              <br></br>
-              <input type="radio" name="example"  value="/category/books"  onClick={this.showSoldProducts}  style={{marginRight: '15px'}}/>
-                Products Sold
-              <br></br>
-              <input type="radio" name="example"  value="/category/books"  onClick={this.showBoughtProducts}  style={{marginRight: '15px'}}/>
-                Products Bought
-              <br></br>
-          </div>
-
-          <div>
-              <h2>{this.state.title}</h2>
-          </div>
-
-          <div className="row justify-content-center col-sm-5 col-5 col-md-9 col-lg-10" style={{marginLeft: '0px', marginRight: '50px' }}>
-           
-              {this.state.content}
-           
-          </div>
-       </div>
-     
-       </span>
       </div>
-    );
-  }
+      );
+      }
+      else{
+        return(
+          <Login />
+        );
+      }
+    }
 }
 
 export default AccountPage;
