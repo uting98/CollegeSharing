@@ -13,12 +13,7 @@ router.post("/", async (req, res) => {
   console.log(req.body.buyerID);
   const { sellerID, buyerID } = req.body;
   Chat.findOrCreate({
-    where: {
-      [op.or]: [
-        { user1: buyerID, user2: sellerID },
-        { user1: sellerID, user2: buyerID }
-      ]
-    }
+    where: {user1: buyerID, user2: sellerID }
   })
     .then(chat => {
         console.log({newRecord: chat[0].newRecord});
@@ -28,6 +23,11 @@ router.post("/", async (req, res) => {
       res.status(400).json({ msg: "Failed to find or create chat", err });
     });
 });
+
+    //   [op.or]: [
+    //     { user1: buyerID, user2: sellerID },
+    //     { user1: sellerID, user2: buyerID }
+    //   ]
 
 router.get("/", async (req, res) => {
     console.log("POST body: ", req.body);
@@ -44,14 +44,7 @@ router.get("/", async (req, res) => {
       .then(async (chats) => {
           allFriend = [];
           const promises = chats.map(async (chat) => {
-            console.log(chat)
-            //   console.log("---- IN FILTER 1 ----")
             const friendID = chat.dataValues.user1 == userID ? chat.dataValues.user2 : chat.dataValues.user1;
-            //   console.log("---- IN FILTER 2 ----")
-            //   const friendName = await findUserName(friendID);
-            console.log({userID: userID})
-            console.log({chatUserId: chat.dataValues.user2})
-            console.log(friendID)
             
             const friendName = await findUserName(friendID);
 
