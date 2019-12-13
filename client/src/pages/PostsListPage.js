@@ -131,9 +131,9 @@ class PostsListPage extends React.Component {
 
 
       <div  className='row' style={{display:'contents'}}>
-          <div className='col-xs-12 col-sm-2 col-md-2 col-lg-2 filter-category justify-content-left shadow' style={{overflow:'hidden',background:'#87ceeb', height:'fit-content', marginRight:'0em',float:'left',textAlign:'left',
-           padding:'0.1em 0.5em 0.1em 0.5em',  borderColor:'#FFD700 ',borderWidth:'2px', borderStyle:'solid', marginBottom:'2em'}}>
-           <strong>Catrgories:</strong>
+          <div className='col-xs-12 col-sm-2 col-md-2 col-lg-2 filter-category justify-content-left' style={{overflow:'hidden',background:'#d1f3ff', height:'fit-content', marginRight:'0em',float:'left',textAlign:'left',
+           padding:'0.1em 0.5em 0.1em 0.5em',  borderColor:'#ffb79e',borderWidth:'5px', borderStyle:'solid', marginBottom:'2em'}}>
+           <strong >Catrgories:</strong>
               <br></br>
               <input type="radio" name="category" value="electronics" onClick={this.handleChecked} style={{marginRight: '1em'}}/>
                 Electronics 

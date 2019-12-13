@@ -1,13 +1,14 @@
-import React from 'react';
+import React from "react";
 import cookie from "react-cookies";
 import TextField from "@material-ui/core/TextField";
+import { Button } from "@material-ui/core";
 import { Redirect } from "react-router-dom";
 
 class IndividualProduct extends React.Component {
-   constructor(props) {
+  constructor(props) {
     super(props);
     const urls = window.location.href;
-    const pID = urls.slice(urls.lastIndexOf('/') + 1, urls.length);
+    const pID = urls.slice(urls.lastIndexOf("/") + 1, urls.length);
     this.state = {
       productID: pID,
       productName: "",
@@ -18,77 +19,149 @@ class IndividualProduct extends React.Component {
       category: "",
       image: null,
       imageURL: "",
-      ErrorMessage:"",
+      ErrorMessage: "",
+      remaining: "",
       sellerName: "",
 
       fetchChatSuccess: "",
       newChat: "",
-      chatID: "",
+      chatID: ""
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    
-}
+  }
 
-componentDidMount() {
+  componentDidMount() {
     const { pID } = this.props.match.params;
-     fetch("/api/products/"+ this.state.productID )
+    fetch("/api/products/" + this.state.productID)
       .then(res => res.json())
       .then(
-        (result) => {
-          console.log(result)
-              this.setState({
-                productName: result.productName,
-                description: result.description,
-                price: result.price,
-                amount: result.amount,
-                sellerID: result.sellerID,
-                category: result.category,
-                imageURL: result.imageURL,
-                sellerName: result.sellerName,
+        result => {
+          console.log(result);
+          this.setState({
+            productName: result.productName,
+            description: result.description,
+            price: result.price,
+            amount: result.amount,
+            sellerID: result.sellerID,
+            category: result.category,
+            imageURL: result.imageURL,
+            sellerName: result.sellerName
           });
-          //console.log(filteredDate.productID); 
+          //console.log(filteredDate.productID);
         },
         // Note: it's important to handle errors here
         // instead of a catch() block so that we don't swallow
         // exceptions from actual bugs in components.
-        (error) => {
+        error => {
           this.setState({
             error
           });
         }
-      )
-
+      );
   }
 
-  handleChange = (event) => {
-    if(event.target.value > this.state.amount){
-       this.setState({ 
-         ErrorMessage:"Sorry. We do not have that much products you want.",});
-    }
-    else if(event.target.value < 0){
-      this.setState({ErrorMessage:"Opps. You can not buy negative amount of products"});
-    }
-    else if(event.target.value == 0){
-      this.setState({ErrorMessage:"Are you sure that you don't want to buy anything?"});
-
-    }
-    else 
-    {
+  handleChange = event => {
+    console.log("event is " + event.target.value);
+    if (event.target.value > this.state.amount) {
       this.setState({
-      [event.target.name]: event.target.value,
-      ErrorMessage:"",});
+        quantity: "",
+        ErrorMessage: "Sorry. We do not have that much products you want."
+      });
+    } else if (event.target.value < 0) {
+      this.setState({
+        ErrorMessage: "Opps. You can not buy negative amount of products"
+      });
+    } else if (event.target.value == 0) {
+      this.setState({
+        quantity: "",
+        ErrorMessage: "Are you sure that you don't want to buy anything?"
+      });
+    } else {
+      this.setState({
+        remaining: this.state.amount - event.target.value,
+        quantity: event.target.value,
+        ErrorMessage: ""
+      });
     }
-  }
+  };
 
-  handleSubmit = (event) => {
+  createTransaction = event => {
+    const header = cookie.load("token");
+    const transactionData = {
+      sellerID: this.state.sellerID,
+      productID: this.state.productID,
+      buyerID: 4,
+      price: this.state.price,
+      amount: this.state.quantity
+    };
+
+    fetch("/api/transactions", {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${header}`
+      },
+      body: JSON.stringify(transactionData)
+    })
+      .then(res => {
+        console.log(res);
+        if (res.ok) {
+          return res.json();
+        }
+        throw new Error("Transaction Validation");
+      })
+      .then(product => {
+        this.setState({
+          success: true
+        });
+      })
+      .catch(err => {
+        this.setState({
+          error: true
+        });
+        console.log(err);
+      });
+  };
+
+  updateProduct = event => {
+    fetch(
+      "/api/products/amount/" +
+        this.state.productID +
+        "/" +
+        this.state.remaining,
+      {
+        method: "PUT",
+        credentials: "include"
+      }
+    )
+      .then(response => {
+        response.json().then(response => {
+          console.log("response is " + response);
+        });
+      })
+      .catch(err => {
+        console.error("button error " + err);
+      });
+
+    this.setState({
+      amount: this.state.remaining
+    });
+  };
+
+  handleSubmit = event => {
     event.preventDefault();
 
-    const header = cookie.load('token');
-    
     const chatData = {
       sellerID: this.state.sellerID
     };
+
+    const header = cookie.load("token");
+
+    this.createTransaction();
+    console.log("Button pressed");
+    this.updateProduct();
 
     // console.log(productData)
 
@@ -97,7 +170,7 @@ componentDidMount() {
       credentials: "include",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${header}`
+        Authorization: `Bearer ${header}`
       },
       body: JSON.stringify(chatData)
     })
@@ -119,28 +192,38 @@ componentDidMount() {
       .catch(err => {
         this.setState({
           fetchChatSuccess: false
+          //success: false
         });
         console.log(err);
       });
-  }
+  };
 
-
-  render(){
+  render() {
+    let errorMessage;
+    if (this.state.success) {
+      errorMessage = (
+        <div className="alert alert-success">"Purchase recorded"</div>
+      );
+    }
     return (
       <div className="individualProductFrame" style={{ width: "50%" }}>
+        {errorMessage}
         <div className="card mb-4 shadow">
-          <div className="card-body card-text ">
-            <img
-              src={this.state.imageURL}
-              style={{ float: "left", width: "55%" }}
-            />
-
-            <div style={{ float: "right", width: "43%", textAlign: "left" }}>
-              <h6> Product Name: {this.state.productName} </h6>
-              <h6> Sold By: {this.state.sellerNamegi} </h6>
+          <div className="row card-body card-text ">
+            <div className="col-xs-12 col-sm-5">
+              <img
+                src={this.state.imageURL}
+                style={{ float: "left", width: "100%" }}
+              />
+            </div>
+            <div
+              className="col-xs-12 col-sm-7"
+              style={{ float: "right", width: "100%", textAlign: "left" }}
+            >
+              <h6> Product Name: {this.state.productName}</h6>
+              <h6> Sold By: {this.state.sellerName}</h6>
               <h6> Category: {this.state.category} </h6>
               <h6>
-                {" "}
                 Description:
                 <p className="card mb-4 shadow">{this.state.description}</p>
               </h6>
@@ -156,7 +239,7 @@ componentDidMount() {
           <form onSubmit={this.handleSubmit}>
             <div className="card-footer small text-muted text-right cus-footer">
               <TextField
-                style={{ width: "10%" }}
+                style={{ minWidth: "10%", width: "100px", marginBottom: "1em" }}
                 type="number"
                 placeholder="Quantity"
                 value={this.state.quantity}
@@ -164,13 +247,18 @@ componentDidMount() {
                 inputProps={{ min: "1", max: this.state.amount }}
                 required
               />
-              <button
+
+              <Button
                 disabled={cookie.load("username") == this.state.sellerName}
                 type="submit"
-                style={{ borderRadius: "2px" }}
+                style={{
+                  backgroundColor: "#ff7e52",
+                  marginLeft: "1em",
+                  borderRadius: "2px"
+                }}
               >
                 Buy
-              </button>
+              </Button>
               <div style={{ color: "red" }}>{this.state.ErrorMessage}</div>
             </div>
           </form>
@@ -181,5 +269,3 @@ componentDidMount() {
 }
 
 export default IndividualProduct;
-
-
