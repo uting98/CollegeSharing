@@ -1,7 +1,7 @@
 import React from 'react';
 
 
-function Transaction({ transactionID, sellerID, buyerID, productID, price, amount, createdAt }) {
+function Transaction({ transactionID, sellerID, buyerID, productID, price, amount, createdAt, sellerName, buyerName }) {
 
     console.log("\n Transaction.js \n");   
   return (
@@ -32,7 +32,7 @@ function Transaction({ transactionID, sellerID, buyerID, productID, price, amoun
                 </ul>
             </div>
             
-            <hr color="#c7c34c" size="2" width="100%"></hr>
+            <hr style={{backgroundColor:'#ffb79e', height:"2px", width:"100%"}}/>
 
         </div>
       

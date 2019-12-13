@@ -6,22 +6,22 @@ import TextField from "@material-ui/core/TextField";
 function UserInfo({ userID, username, email, password, school, first, last }) {
     console.log("\n UserInfo.js \n");
   return (
-        <div className="col-12" style = {{overflow:'hidden',textAlign:"left", backgroundClip:'white', paddingLeft:'2em', fontSize:'16px'}}>
+  <div className="col-12" style={{width:'100%', textAlign:"left"}}>
               <ul>
                 <li>
-                  <p>Name is:<strong> {first} {last} </strong></p>
+                  Name is:<strong> {first} {last} </strong>
                 </li>
                 <li>
-                  <p>User ID is:<strong> {userID} </strong></p>
+                  User ID is:<strong> {userID} </strong>
                 </li>
                 <li>
-                  <p>Username is:<strong> {username} </strong></p>
+                  Username is:<strong> {username} </strong>
                 </li>
                 <li>
-                  <p>Email is: <strong>{email}</strong></p>
+                  Email is: <strong>{email}</strong>
                 </li>
                 <li>
-                  <p>School is:<strong> {school}</strong></p>
+                  School is:<strong> {school}</strong>
                 </li>
                           
                 <li>
@@ -33,8 +33,10 @@ function UserInfo({ userID, username, email, password, school, first, last }) {
                   className="md-cell md-cell--bottom"/>
                 </li>
               </ul>
-            
-          <hr color="#c7c34c" size="2" width="100%"></hr>
+
+                      
+              <hr style={{backgroundColor:'#ffb79e', height:"2px", width:"100%"}}/>
+    
         </div>
       
     
