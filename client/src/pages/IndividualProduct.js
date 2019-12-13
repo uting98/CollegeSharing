@@ -236,33 +236,39 @@ class IndividualProduct extends React.Component {
           {this.state.fetchChatSuccess && (
             <Redirect to={`/chat/${this.state.chatID}`} />
           )}
+          {cookie.load("username") == this.state.sellerName ? (
+            "You Cannot buy Your Own Product"
+          ) : (
+            <form onSubmit={this.handleSubmit}>
+              <div className="card-footer small text-muted text-right cus-footer">
+                <TextField
+                  style={{
+                    minWidth: "10%",
+                    width: "100px",
+                    marginBottom: "1em"
+                  }}
+                  type="number"
+                  placeholder="Quantity"
+                  value={this.state.quantity}
+                  onChange={this.handleChange}
+                  inputProps={{ min: "1", max: this.state.amount }}
+                  required
+                />
 
-          <form onSubmit={this.handleSubmit}>
-            <div className="card-footer small text-muted text-right cus-footer">
-              <TextField
-                style={{ minWidth: "10%", width: "100px", marginBottom: "1em" }}
-                type="number"
-                placeholder="Quantity"
-                value={this.state.quantity}
-                onChange={this.handleChange}
-                inputProps={{ min: "1", max: this.state.amount }}
-                required
-              />
-
-              <Button
-                disabled={cookie.load("username") == this.state.sellerName}
-                type="submit"
-                style={{
-                  backgroundColor: "#ff7e52",
-                  marginLeft: "1em",
-                  borderRadius: "2px"
-                }}
-              >
-                Buy
-              </Button>
-              <div style={{ color: "red" }}>{this.state.ErrorMessage}</div>
-            </div>
-          </form>
+                <Button
+                  type="submit"
+                  style={{
+                    backgroundColor: "#ff7e52",
+                    marginLeft: "1em",
+                    borderRadius: "2px"
+                  }}
+                >
+                  Buy
+                </Button>
+                <div style={{ color: "red" }}>{this.state.ErrorMessage}</div>
+              </div>
+            </form>
+          )}
         </div>
       </div>
     );

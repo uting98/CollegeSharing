@@ -42,6 +42,11 @@ class Navigation extends React.Component {
             </NavLink>
           </li>
           <li className="nav-item">
+          <NavLink className="nav-link" exact to="/chat">
+            Chatting Room
+          </NavLink>
+          </li>
+          <li className="nav-item">
           <NavLink className="nav-link" exact to="/accountPage">
             My Account
           </NavLink>

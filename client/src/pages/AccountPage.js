@@ -126,7 +126,6 @@ class AccountPage extends React.Component {
       );
 
     })
-
     .catch(err => console.log("API ERROR: transaction " , err));
    }
 
