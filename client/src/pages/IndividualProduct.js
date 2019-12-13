@@ -63,20 +63,21 @@ componentDidMount() {
 
   handleChange = (event) => {
     if(event.target.value > this.state.amount){
-       this.setState({ 
+       this.setState({ quantity:0,
          ErrorMessage:"Sorry. We do not have that much products you want.",});
     }
     else if(event.target.value < 0){
       this.setState({ErrorMessage:"Opps. You can not buy negative amount of products"});
     }
     else if(event.target.value == 0){
-      this.setState({ErrorMessage:"Are you sure that you don't want to buy anything?"});
+      this.setState({quantity:0, ErrorMessage:"Are you sure that you don't want to buy anything?"});
 
     }
     else 
     {
       this.setState({
-      [event.target.name]: event.target.value,
+      remaining: this.state.amount - event.target.value,
+      quantity: event.target.value,
       ErrorMessage:"",});
     }
   }
@@ -131,10 +132,13 @@ componentDidMount() {
     return(
       <div className = "individualProductFrame" style={{width:'50%'}} >
         <div className="card mb-4 shadow">
-          <div className="card-body card-text ">
-            <img src={this.state.imageURL} style={{float:'left', width:'55%'}}/>
-
-            <div style={{float:'right', width:'43%', textAlign:'left'}}>
+          <div className="row card-body card-text ">
+            <div className='col-xs-12 col-sm-5'>
+              
+            <img src={this.state.imageURL} style={{float:'left', width:'100%'}}/>
+            
+            </div>
+            <div className = "col-xs-12 col-sm-7" style={{float:'right', width:'100%', textAlign:'left'}}>
               <h6> Product Name: {this.state.productName} </h6>
               <h6> Sold By: {this.state.sellerName} </h6>
               <h6> Category: {this.state.category} </h6>
