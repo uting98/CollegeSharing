@@ -37,3 +37,17 @@
 .individualProductFrame{
   width:50%;
 }
+
+/* For Chat Page */
+.messageFloatRight{
+  float: right;
+}
+.box2 {
+  height: 100%
+}
+.chatSpace{
+    background: #f6f7fa;
+    border-color: #eff1f5;
+    height: calc(100vh - 230px);
+    overflow: auto;
+}

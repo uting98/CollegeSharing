@@ -21,9 +21,9 @@ class IndividualProduct extends React.Component {
       ErrorMessage:"",
       sellerName: "",
 
-      success: "",
+      fetchChatSuccess: "",
       newChat: "",
-      chatId: "",
+      chatID: "",
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -102,7 +102,7 @@ componentDidMount() {
       body: JSON.stringify(chatData)
     })
       .then(res => {
-        console.log(res);
+        // console.log(res);
         if (res.ok) {
           return res.json();
         }
@@ -111,16 +111,14 @@ componentDidMount() {
       .then(data => {
         console.log(data);
         this.setState({
-          success: true,
-          // chatId: data.
-          // newChat: data[1]
+          fetchChatSuccess: true,
+          chatID: data.value.chatID
         });
-        // <Redirect to={`/viewpost/${mainPost.postID}`} />
-        // console.log(this.state.newChat)
+        // console.log(this.state.chatID);
       })
       .catch(err => {
         this.setState({
-          success: false
+          fetchChatSuccess: false
         });
         console.log(err);
       });
@@ -128,44 +126,56 @@ componentDidMount() {
 
 
   render(){
-    return(
-      <div className = "individualProductFrame" style={{width:'50%'}} >
+    return (
+      <div className="individualProductFrame" style={{ width: "50%" }}>
         <div className="card mb-4 shadow">
           <div className="card-body card-text ">
-            <img src={this.state.imageURL} style={{float:'left', width:'55%'}}/>
+            <img
+              src={this.state.imageURL}
+              style={{ float: "left", width: "55%" }}
+            />
 
-            <div style={{float:'right', width:'43%', textAlign:'left'}}>
+            <div style={{ float: "right", width: "43%", textAlign: "left" }}>
               <h6> Product Name: {this.state.productName} </h6>
-              <h6> Sold By: {this.state.sellerName} </h6>
+              <h6> Sold By: {this.state.sellerNamegi} </h6>
               <h6> Category: {this.state.category} </h6>
-              <h6 > Description: 
-                <p className="card mb-4 shadow"> 
-                  {this.state.description}
-                </p>
+              <h6>
+                {" "}
+                Description:
+                <p className="card mb-4 shadow">{this.state.description}</p>
               </h6>
               <h6> Quantity: {this.state.amount}</h6>
-              <h6> Price: ${this.state.price}</h6>             
+              <h6> Price: ${this.state.price}</h6>
             </div>
           </div>
 
+          {this.state.fetchChatSuccess && (
+            <Redirect to={`/chat/${this.state.chatID}`} />
+          )}
+
           <form onSubmit={this.handleSubmit}>
             <div className="card-footer small text-muted text-right cus-footer">
-              <TextField style={{width:'10%'}}
-                type="number" 
-                placeholder="Quantity" 
-                value = {this.state.quantity}
-                onChange = {this.handleChange}
+              <TextField
+                style={{ width: "10%" }}
+                type="number"
+                placeholder="Quantity"
+                value={this.state.quantity}
+                onChange={this.handleChange}
                 inputProps={{ min: "1", max: this.state.amount }}
                 required
               />
-
-              <button disabled={cookie.load("username") == this.state.sellerName} type="submit" style={{borderRadius: '2px'}}> Buy </button>
-              <div style = {{color:'red'}}>{this.state.ErrorMessage}</div>
+              <button
+                disabled={cookie.load("username") == this.state.sellerName}
+                type="submit"
+                style={{ borderRadius: "2px" }}
+              >
+                Buy
+              </button>
+              <div style={{ color: "red" }}>{this.state.ErrorMessage}</div>
             </div>
           </form>
         </div>
       </div>
-
     );
   }
 }
