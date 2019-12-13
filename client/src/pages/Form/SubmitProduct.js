@@ -18,7 +18,7 @@ class SubmitProduct extends React.Component {
       description: "",
       price: "",
       amount: "",
-      category: "textbook",
+      category: "textbooks",
       image: null,
       imageURL: "",
     };
