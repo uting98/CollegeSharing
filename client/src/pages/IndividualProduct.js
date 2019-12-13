@@ -232,7 +232,7 @@ componentDidMount() {
 
           <form onSubmit={this.handleSubmit}>
             <div className="card-footer small text-muted text-right cus-footer">
-              <TextField style={{minWidth:'10%',marginBottom:'1em'}}
+              <TextField style={{minWidth:'10%', width:'100px', marginBottom:'1em'}}
                 type="number" 
                 placeholder="Quantity" 
                 value = {this.state.quantity}
