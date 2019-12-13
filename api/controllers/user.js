@@ -90,7 +90,9 @@ async function findUser(username) {
 }
 
 async function findUserName(userID) {
+  
   try {
+    console.log("\nuser name\n");
     const response = await User.findOne({
       where: { userID }
     });

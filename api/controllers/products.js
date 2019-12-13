@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('../models');
 const { Product } = require('../models');
-
+const {Transaction} =  require('../models');
 const { UserProfile } = require('../models');
 const { User } = require('../models');
 const Sequelize = require('sequelize');
@@ -31,20 +31,13 @@ router.get('/', async (req,res) => {
 
 router.get("/:productID", async (req, res) => {
   try {
-    // req.userID = await tokenAuthentiation(req.headers.authorization);
-    // req.sellerName = await findUserName(req.sellerID)
-    // const sellerName = await findUserName(req.userID)
-    // console.log("sellerName = " + sellerName)
     Product.findAll({
       where: { productID: req.params.productID }
     }).then (async (prods) => {
-      console.log("prods = " +  prods[0].sellerID)
       const sellerName = await findUserName(prods[0].sellerID);
       console.log("-- in get product --")
       console.log(sellerName)
-      console.log({sellerName, ...prods[0].dataValues})
       res.json({sellerName, ...prods[0].dataValues});
-      //console.log("INSIDE GET REQ   "+prods);
     });
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -200,6 +193,7 @@ router.put('/amount/:productID/:remaining', (req, res) => {
 
     res.json(prod);
   });
+  
 
 });
 

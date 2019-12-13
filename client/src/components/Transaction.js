@@ -1,7 +1,7 @@
 import React from 'react';
 
 
-function Transaction({ transactionID, sellerID, buyerID, productID, price, amount, createdAt }) {
+function Transaction({ transactionID, sellerID, buyerID, productID, price, amount, createdAt, sellerName, buyerName }) {
 
     console.log("\n Transaction.js \n");   
   return (

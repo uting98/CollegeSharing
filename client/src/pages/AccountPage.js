@@ -98,7 +98,6 @@ class AccountPage extends React.Component {
       .then(res => res.json())
 
       .then(trans => {
-        console.log("state saved transaction" + this.state.content[0]);
         this.setState({
           loading: false, 
           content: trans.map((p,ii) => <Transaction {...p} key={ii} />),

@@ -1,6 +1,7 @@
 import React from 'react';
 import cookie from "react-cookies";
 import TextField from "@material-ui/core/TextField";
+import { Button } from "@material-ui/core";
 import { Redirect } from "react-router-dom";
 
 class IndividualProduct extends React.Component {
@@ -19,6 +20,7 @@ class IndividualProduct extends React.Component {
       image: null,
       imageURL: "",
       ErrorMessage:"",
+      remaining:"",
       sellerName: "",
 
       success: "",
@@ -62,15 +64,16 @@ componentDidMount() {
   }
 
   handleChange = (event) => {
+    console.log("event is "+ event.target.value);
     if(event.target.value > this.state.amount){
-       this.setState({ quantity:0,
+       this.setState({ quantity:"",
          ErrorMessage:"Sorry. We do not have that much products you want.",});
     }
     else if(event.target.value < 0){
       this.setState({ErrorMessage:"Opps. You can not buy negative amount of products"});
     }
     else if(event.target.value == 0){
-      this.setState({quantity:0, ErrorMessage:"Are you sure that you don't want to buy anything?"});
+      this.setState({quantity:"", ErrorMessage:"Are you sure that you don't want to buy anything?"});
 
     }
     else 
@@ -81,15 +84,86 @@ componentDidMount() {
       ErrorMessage:"",});
     }
   }
+  
+  createTransaction = (event)=> {
+    const header = cookie.load('token');
+    const transactionData = {
+      sellerID: this.state.sellerID,
+      productID: this.state.productID,
+      buyerID: 4,
+      price: this.state.price,
+      amount: this.state.quantity
+    }
+
+
+    fetch("/api/transactions", {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${header}`
+      },
+      body: JSON.stringify(transactionData)
+    })
+      .then(res => {
+        console.log(res);
+        if (res.ok) {
+          return res.json();
+        }
+        throw new Error("Transaction Validation");
+      })
+      .then(product => {
+        this.setState({
+          success: true
+        });
+      })
+      .catch(err => {
+        this.setState({
+          error: true
+        });
+        console.log(err);
+      });
+  }
+
+  updateProduct = (event) =>{
+
+    fetch("/api/products/amount/"+this.state.productID+"/"+ this.state.remaining, {
+      method: 'PUT',
+      credentials: "include",
+
+    }).then((response) => {
+      response.json().then((response) => {
+        console.log("response is " + response);
+      })
+    }).catch(err => {
+      console.error("button error " + err)
+    })
+  
+    this.setState({
+      amount: this.state.remaining
+    });
+
+  }
 
   handleSubmit = (event) => {
-    event.preventDefault();
-
-    const header = cookie.load('token');
+    event.preventDefault(); 
     
     const chatData = {
       sellerID: this.state.sellerID
     };
+
+    const header = cookie.load('token');
+    const transactionData = {
+      sellerID: this.state.sellerID,
+      productID: this.state.productID,
+      buyerID: 4,
+      price: this.state.price,
+      amount: this.state.quantity
+    }
+
+    this.createTransaction();
+    console.log("Button pressed");
+    this.updateProduct();
 
     // console.log(productData)
 
@@ -121,7 +195,7 @@ componentDidMount() {
       })
       .catch(err => {
         this.setState({
-          success: false
+          //success: false
         });
         console.log(err);
       });
@@ -129,8 +203,18 @@ componentDidMount() {
 
 
   render(){
+    let errorMessage;
+    if (this.state.success) {
+      errorMessage = (
+        <div className="alert alert-success">
+          "Purchase recorded"
+        </div>
+      );
+    }
+
     return(
       <div className = "individualProductFrame" style={{width:'50%'}} >
+        {errorMessage}
         <div className="card mb-4 shadow">
           <div className="row card-body card-text ">
             <div className='col-xs-12 col-sm-5'>
@@ -139,8 +223,8 @@ componentDidMount() {
             
             </div>
             <div className = "col-xs-12 col-sm-7" style={{float:'right', width:'100%', textAlign:'left'}}>
-              <h6> Product Name: {this.state.productName} </h6>
-              <h6> Sold By: {this.state.sellerName} </h6>
+              <h6> Product Name: {this.state.productName}</h6>
+              <h6> Sold By: {this.state.sellerName} (id: {this.state.sellerID})</h6>
               <h6> Category: {this.state.category} </h6>
               <h6 > Description: 
                 <p className="card mb-4 shadow"> 
@@ -154,7 +238,7 @@ componentDidMount() {
 
           <form onSubmit={this.handleSubmit}>
             <div className="card-footer small text-muted text-right cus-footer">
-              <TextField style={{width:'10%'}}
+              <TextField style={{minWidth:'10%',marginBottom:'1em'}}
                 type="number" 
                 placeholder="Quantity" 
                 value = {this.state.quantity}
@@ -163,7 +247,7 @@ componentDidMount() {
                 required
               />
 
-              <button disabled={cookie.load("username") == this.state.sellerName} type="submit" style={{borderRadius: '2px'}}> Buy </button>
+              <Button disabled={cookie.load("username") == this.state.sellerName} type="submit" style={{backgroundColor:'#ff7e52', marginLeft:'1em', borderRadius: '2px'}}> Buy </Button>
               <div style = {{color:'red'}}>{this.state.ErrorMessage}</div>
             </div>
           </form>
