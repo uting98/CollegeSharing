@@ -154,7 +154,7 @@ class AccountPage extends React.Component {
                {errorMessage}
           <div className="row" style={{display:'contents', overflow:'hidden'}}>
     
-            <div className='col-xs-12 col-sm-2 col-md-2 col-lg-2 filter-category justify-content-left shadow' style={{overflow:'hidden', background:'#9fe5ff', height:'fit-content',float:'left',textAlign:'left',
+            <div className='col-xs-12 col-sm-2 col-md-2 col-lg-2 filter-category justify-content-left shadow' style={{overflow:'hidden', background:'#d1f3ff', height:'fit-content',float:'left',textAlign:'left',
               padding:'0.1em 0.5em 0.1em 0.5em', borderColor:'#ffb79e ',borderWidth:'5px', borderStyle:'solid',marginRight:'2em', marginBottom:'2em'}}>
                 <strong>Catrgories:</strong>
                   <br/>
