@@ -28,12 +28,12 @@ class Navigation extends React.Component {
     const isAuthenticated = cookie.load("token");
     // console.log("isAuth = " + isAuthenticated);
     return (
-      <nav className="navbar navbar-expand-sm navbar-light shadow mb-3" style={{backgroundColor: 'lightblue'}}>
+      <nav className="navbar navbar-expand-sm navbar-light shadow mb-3" style={{backgroundColor: '#9fe5ff'}}>
         
         <Link className="navbar-brand" to="/">
-        <LocalLibraryOutlinedIcon/>
+          <LocalLibraryOutlinedIcon style={{color:'#ff7e52'}}/>
           College Sharing
-          <LocalLibraryOutlinedIcon/>
+          <LocalLibraryOutlinedIcon style={{color:'#ff7e52'}}/>
         </Link>
         <ul className="navbar-nav mr-auto">
           <li className="nav-item">
@@ -47,7 +47,7 @@ class Navigation extends React.Component {
           </NavLink>
         </li>
         <li className="nav-item">
-          <NavLink className="nav-link" exact to="/about">
+          <NavLink className="nav-link" exact to="/about" >
             About Us
           </NavLink>
         </li>

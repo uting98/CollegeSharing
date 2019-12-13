@@ -21,7 +21,7 @@ function AboutUsPage(props) {
           <br/>
           <h3>Tools used</h3>
           <p>
-            We used React JS to build the front end we used tools like bootstrap and material UI to help. On the backend we used node.js and the express.js framework. We used sequeilize as our ORM and postgresql as our database.
+            We used React JS to build the front end and we utilized bootstrap and material UI to help make our site responsive and improve the overall appearnace. On the backend we used node.js and the express.js framework to create a webserver. We used sequeilize as our ORM and postgresql as our database.
           </p>
           
         </div>
@@ -33,18 +33,18 @@ function AboutUsPage(props) {
         <h3 className = "col-12" >Meet the team!</h3>
           <br/>
 
-            <div className = "col-sm-12 col-md-4 col-lg-4" style={{backgroundColor:'lightgray', borderColor:'#FF00FF ',borderWidth:'2px', borderStyle:'solid'}}>
+            <div className = "col-sm-12 col-md-4 col-lg-4" style={{backgroundColor:'lightgray', borderColor:'#ffb79e ',borderWidth:'4px', borderStyle:'solid'}}>
               <h4>PERSON A</h4>
               <img src={port} alt='person A' style={{maxWidth:'40%', maxHeight:'40%'}}/>
               <p>I am juonir at Queens colleg graduating in Spring 2021.I am juonir at Queens colleg graduating in Spring 2021.I am juonir at Queens colleg graduating in Spring 2021.I am juonir at Queens colleg graduating in Spring 2021.I am juonir at Queens colleg graduating in Spring 2021.I am juonir at Queens colleg graduating in Spring 2021.I am juonir at Queens colleg graduating in Spring 2021. Github and Linkedin</p>
              
             </div>
-            <div className = "col-sm-12 col-md-4 col-lg-4" style={{backgroundColor:'lightgray', borderColor:'#FF00FF ',borderWidth:'2px', borderStyle:'solid'}}>
+            <div className = "col-sm-12 col-md-4 col-lg-4" style={{backgroundColor:'lightgray', border:'4px solid #ffb79e'}}>
             <h4>PERSON B</h4>
             <img src={port} alt='person B' style={{maxWidth:'40%', maxHeight:'40%'}}/>
               <p>I am juonir at Queens colleg graduating in Spring 2021.I am juonir at Queens colleg graduating in Spring 2021.I am juonir at Queens colleg graduating in Spring 2021.I am juonir at Queens colleg graduating in Spring 2021.I am juonir at Queens colleg graduating in Spring 2021.I am juonir at Queens colleg graduating in Spring 2021.I am juonir at Queens colleg graduating in Spring 2021. Github and Linkedin</p>
             </div>
-            <div className = "col-sm-12 col-md-4 col-lg-4" style={{backgroundColor:'lightgray', borderColor:'#FF00FF ',borderWidth:'2px', borderStyle:'solid'}}>
+            <div className = "col-sm-12 col-md-4 col-lg-4" style={{backgroundColor:'lightgray', borderColor:'#ffb79e ',borderWidth:'4px', borderStyle:'solid'}}>
             <h4>Jonathan Cali</h4>
             <img src={port} alt='person C' style={{maxWidth:'40%', maxHeight:'40%'}}/>
               <p>I am junoir at CUNY Queens College graduating in Spring 2021. Over the past semseter I have taking part in CUNY Tech Prep which is where we built College Sharing. I love to make things and see how they run, but I also enjoy taking things apart and seeing what makes the tick. I also a big fan of video games and sports in particular the MLB</p>

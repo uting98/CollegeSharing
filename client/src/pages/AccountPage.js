@@ -155,8 +155,8 @@ class AccountPage extends React.Component {
                {errorMessage}
           <div className="row" style={{display:'contents', overflow:'hidden'}}>
     
-            <div className='col-xs-12 col-sm-2 col-md-2 col-lg-2 filter-category justify-content-left shadow' style={{overflow:'hidden', background:'#c0c0c0', height:'fit-content',float:'left',textAlign:'left',
-              padding:'0.1em 0.5em 0.1em 0.5em', borderColor:'#FFD700 ',borderWidth:'2px', borderStyle:'solid',marginRight:'2em', marginBottom:'2em'}}>
+            <div className='col-xs-12 col-sm-2 col-md-2 col-lg-2 filter-category justify-content-left shadow' style={{overflow:'hidden', background:'#9fe5ff', height:'fit-content',float:'left',textAlign:'left',
+              padding:'0.1em 0.5em 0.1em 0.5em', borderColor:'#ffb79e ',borderWidth:'5px', borderStyle:'solid',marginRight:'2em', marginBottom:'2em'}}>
                 <strong>Catrgories:</strong>
                   <br/>
                 <input type="radio" name="account"  onClick={this.fetchUser} style={{marginRight: '1em'}} defaultChecked/>
@@ -173,12 +173,13 @@ class AccountPage extends React.Component {
                 <br/>
             </div>
             
-            <div className="col-xs-12 col-sm-9 col-md-9 col-lg-9 row justify-content-center" style={{}}>
+            <div className="col-xs-12 col-sm-9 col-md-9 col-lg-9 row justify-content-center" style={{marginLeft:'0em'}}>
               <div style={{ backgroundColor:'white', width:'100%' }}>
                   <h2>{this.state.title}</h2>
                   <div className="row justify-content-center" style={{overflow:'hidden'}} >
                     {this.state.content}  
-                  </div>          
+                  </div>    
+                        
               </div>
             
             </div>
