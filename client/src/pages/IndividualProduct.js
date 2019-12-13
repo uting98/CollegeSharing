@@ -153,13 +153,7 @@ componentDidMount() {
     };
 
     const header = cookie.load('token');
-    const transactionData = {
-      sellerID: this.state.sellerID,
-      productID: this.state.productID,
-      buyerID: 4,
-      price: this.state.price,
-      amount: this.state.quantity
-    }
+  
 
     this.createTransaction();
     console.log("Button pressed");
