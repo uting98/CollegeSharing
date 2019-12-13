@@ -33,7 +33,7 @@ class App extends React.Component {
                 <Route path="/productSubmission" component={SubmitProduct} />
                 <Route path="/accountPage" component={AccountPage} />
                 <Route path="/IndividualProduct" component={IndividualProduct} />
-                <Route path="/chat" component={Chat} />
+                <Route path="/chat/:id" component={Chat} />
                 <Route path="/about" component={AboutUsPage} />
                 <Route path="/" component={PostsListPage} />
               </Switch>
