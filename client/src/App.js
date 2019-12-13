@@ -12,6 +12,8 @@ import Login from './pages/Form/Login';
 import AccountPage from './pages/AccountPage';
 import AboutUsPage from './pages/AboutUsPage'
 import IndividualProduct from "./pages/IndividualProduct";
+import Chat from "./pages/Form/Chat";
+
 import bg from './pages/bg-6.jpg';
 import './App.css';
 
@@ -31,6 +33,7 @@ class App extends React.Component {
                 <Route path="/productSubmission" component={SubmitProduct} />
                 <Route path="/accountPage" component={AccountPage} />
                 <Route path="/IndividualProduct" component={IndividualProduct} />
+                <Route path="/chat/:id" component={Chat} />
                 <Route path="/about" component={AboutUsPage} />
                 <Route path="/" component={PostsListPage} />
               </Switch>

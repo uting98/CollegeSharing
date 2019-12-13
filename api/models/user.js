@@ -54,6 +54,11 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "buyerID",
       foreignKeyConstraint: true,
     });
+    User.hasMany(models.Chat, {
+      foreignKey: 'user1',
+      foreignKey: "user2",
+      foreignKeyConstraint: true,
+    });
   };
 
   return User;

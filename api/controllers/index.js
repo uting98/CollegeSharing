@@ -10,6 +10,7 @@ const signUpController = require('./authentication/signup.js');
 const loginController = require('./authentication/login.js');
 const userController = require('./users.js');
 const transactionController = require('./transactions.js');
+const chatController = require('./chat.js');
 
 
 // Mount each controller under a specific route. These
@@ -21,6 +22,7 @@ router.use('/signup', signUpController);
 router.use('/signin', loginController);
 router.use('/users', userController);
 router.use('/transactions', transactionController);
+router.use('/chat', chatController);
 
 
 module.exports = router;

@@ -1,5 +1,8 @@
-import firebase from "firebase/app";
-import "firebase/storage";
+// import firebase from "firebase/app";
+// import "firebase/storage";
+// import "firebase/firestore";
+
+import * as firebase from 'firebase';
 
 var firebaseConfig = {
   apiKey: "AIzaSyBbHM6b8WUoC3rGbKLT5CW5IjBd9GDso6A",
@@ -12,9 +15,14 @@ var firebaseConfig = {
   measurementId: "G-5BE2J4YLVE"
 };
 firebase.initializeApp(firebaseConfig);
-
+// firebase.firestore().settings({
+//   timestampsInSnapshots: true
+// })
+const database = firebase.database();
 const storage = firebase.storage();
+const firestore = firebase.firestore();
+// const fireStore = firebase.firestore()
 
 export { 
-    storage, firebase as default 
+    storage, firebase, firestore, database as default 
 };

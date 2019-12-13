@@ -89,6 +89,20 @@ async function findUser(username) {
   }
 }
 
+async function findUserName(userID) {
+  try {
+    const response = await User.findOne({
+      where: { userID }
+    });
+    const username = response.dataValues.username
+    console.log(response.dataValues);
+    console.log(username)
+    return username;
+  } catch (err) {
+    throw err;
+  }
+}
+
 async function getMatchingUser(username) {
   try {
     const userData = await findUser(username);
@@ -136,4 +150,4 @@ async function tokenAuthentiation(token) {
   }
 }
 
-module.exports = { registerUserInfo, validateUserCredential, tokenAuthentiation }; 
+module.exports = { registerUserInfo, validateUserCredential, tokenAuthentiation, findUserName }; 
