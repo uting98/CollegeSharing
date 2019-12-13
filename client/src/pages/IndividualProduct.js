@@ -22,6 +22,7 @@ class IndividualProduct extends React.Component {
       ErrorMessage: "",
       remaining: "",
       sellerName: "",
+      quantity: "",
 
       fetchChatSuccess: "",
       newChat: "",
@@ -65,7 +66,7 @@ class IndividualProduct extends React.Component {
     console.log("event is " + event.target.value);
     if (event.target.value > this.state.amount) {
       this.setState({
-        quantity: "",
+        quantity: event.target.value,
         ErrorMessage: "Sorry. We do not have that much products you want."
       });
     } else if (event.target.value < 0) {
@@ -74,7 +75,7 @@ class IndividualProduct extends React.Component {
       });
     } else if (event.target.value == 0) {
       this.setState({
-        quantity: "",
+        quantity: event.target.value,
         ErrorMessage: "Are you sure that you don't want to buy anything?"
       });
     } else {
